@@ -16,6 +16,9 @@ if (gradle.startParameter.taskRequests.toString().contains("Standard")) {
 
 android {
     compileSdk = 33
+    buildFeatures {
+        buildConfig = true
+    }
 
     fun loadProperties(file: String) = if (rootProject.file(file).exists()) {
         val fis = FileInputStream(rootProject.file(file))
@@ -34,15 +37,21 @@ android {
     fun getAniListSecretProperty(name: String, default: String = ""): String =
         secretProps?.getProperty(name) ?: "\"$default\""
 
-    fun getReleaseProperty(name: String, default: String = ""): String =
-        releaseProps?.getProperty(name) ?: "\"$default\""
+    fun getReleaseProperty(name: String, default: String = ""): String {
+        val value = releaseProps?.getProperty(name) ?: default
+        if (value.isNullOrEmpty()) {
+            throw IllegalArgumentException("Keystore path for $name cannot be null or empty")
+        }
+        return value
+    }
+
 
     defaultConfig {
         applicationId = "com.revolgenx.anilib"
         minSdk = 21
         targetSdk = 33
-        versionCode = 40
-        versionName = "1.1.18"
+        versionCode = 41
+        versionName = "1.1.19"
         vectorDrawables.useSupportLibrary = true
 
         buildConfigField(
@@ -186,6 +195,8 @@ dependencies {
     implementation("io.insert-koin:koin-android:${LibraryVersion.koin_version}")
     implementation("io.insert-koin:koin-android:${LibraryVersion.koin_version}")
 
+    implementation("org.jetbrains.kotlin:kotlin-reflect:1.9.24")
+
 
     //coroutine
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:${LibraryVersion.coroutine_version}")
@@ -245,6 +256,7 @@ dependencies {
 
     //hauler
     implementation("com.thefuntasty.hauler:core:${LibraryVersion.hauler_version}")
+
 
     //bigimageviewer
     implementation("com.github.piasy:BigImageViewer:${LibraryVersion.big_image_viewer_version}")

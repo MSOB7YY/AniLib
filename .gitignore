@@ -12,3 +12,9 @@ secret.properties
 /app/build/
 /.idea/
 /release.properties
+
+
+keystore.jks*
+keystore.base64*
+release.properties*
+secret.properties*
