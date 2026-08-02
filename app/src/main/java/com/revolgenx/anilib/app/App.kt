@@ -11,8 +11,11 @@ import androidx.annotation.DrawableRes
 import androidx.annotation.RequiresApi
 import androidx.annotation.StyleRes
 import androidx.work.*
+import com.facebook.cache.disk.DiskCacheConfig
+import com.facebook.common.internal.Supplier
 import com.facebook.common.logging.FLog
 import com.facebook.imagepipeline.backends.okhttp3.OkHttpImagePipelineConfigFactory
+import com.facebook.imagepipeline.cache.MemoryCacheParams
 import com.facebook.imagepipeline.listener.RequestListener
 import com.facebook.imagepipeline.listener.RequestLoggingListener
 import com.github.piasy.biv.BigImageViewer
@@ -47,6 +50,17 @@ import okhttp3.OkHttpClient
 open class App : DynamicApplication() {
     companion object{
         var applicationContext:Context? = null
+
+        private const val MB = 1024L * 1024L
+
+        // image cache sizing, see setupFresco
+        private const val MAX_DISK_CACHE_SIZE = 2L * 1024L * MB
+        private const val MAX_DISK_CACHE_SIZE_LOW_SPACE = 512L * MB
+        private const val MAX_DISK_CACHE_SIZE_VERY_LOW_SPACE = 128L * MB
+
+        private const val MIN_BITMAP_CACHE_SIZE = 24L * MB
+        private const val MAX_BITMAP_CACHE_SIZE = 128L * MB
+        private const val MAX_BITMAP_CACHE_ENTRIES = 512
     }
 
     override fun attachBaseContext(base: Context) {
@@ -89,8 +103,40 @@ open class App : DynamicApplication() {
         val config =
             OkHttpImagePipelineConfigFactory.newBuilder(context, OkHttpClient()) // other setters
                 .setRequestListeners(requestListeners)
+                .setBitmapMemoryCacheParamsSupplier(bitmapMemoryCacheParamsSupplier())
+                .setMainDiskCacheConfig(mainDiskCacheConfig())
                 .build()
         BigImageViewer.initialize(FrescoImageLoader.with(this.applicationContext, config))
+    }
+
+    /**
+     * Fresco defaults the on disk image cache to 40MB, which a covers only a few screens worth
+     * of cover art before it starts evicting and re-downloading.
+     */
+    private fun mainDiskCacheConfig(): DiskCacheConfig =
+        DiskCacheConfig.newBuilder(this)
+            .setMaxCacheSize(MAX_DISK_CACHE_SIZE)
+            .setMaxCacheSizeOnLowDiskSpace(MAX_DISK_CACHE_SIZE_LOW_SPACE)
+            .setMaxCacheSizeOnVeryLowDiskSpace(MAX_DISK_CACHE_SIZE_VERY_LOW_SPACE)
+            .build()
+
+    /**
+     * Fresco defaults the decoded bitmap cache to a quarter of the app heap. Scale that up, but
+     * keep it proportional to the heap so low end devices are not pushed into churning, and cap
+     * any single entry so one large image cannot evict everything else.
+     */
+    private fun bitmapMemoryCacheParamsSupplier() = Supplier {
+        val maxCacheSize = (Runtime.getRuntime().maxMemory() / 3)
+            .coerceIn(MIN_BITMAP_CACHE_SIZE, MAX_BITMAP_CACHE_SIZE)
+            .toInt()
+
+        MemoryCacheParams(
+            maxCacheSize,
+            MAX_BITMAP_CACHE_ENTRIES,
+            maxCacheSize,
+            MAX_BITMAP_CACHE_ENTRIES,
+            maxCacheSize / 4
+        )
     }
 
 
