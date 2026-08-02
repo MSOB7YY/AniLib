@@ -68,7 +68,7 @@ class MediaListPresenter(
 
         binding.apply {
             mediaListTitleTv.text = media.title?.userPreferred
-            mediaListCoverImageView.setImageURI(media.coverImage?.large)
+            mediaListCoverImageView.setImageURI(media.coverImage?.image())
             mediaListFormatTv.text = media.format?.let {
                 mediaFormats[it]
             }.naText()

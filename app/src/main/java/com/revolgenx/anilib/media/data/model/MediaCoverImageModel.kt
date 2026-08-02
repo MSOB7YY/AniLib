@@ -19,7 +19,7 @@ class MediaCoverImageModel(medium: String?, large: String?, val extraLarge: Stri
             "0" -> image
             "1" -> sImage
             "2" -> largeImage
-            else -> image
+            else -> largeImage
         }
 
 }

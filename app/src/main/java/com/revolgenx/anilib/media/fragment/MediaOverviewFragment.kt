@@ -28,6 +28,7 @@ import com.revolgenx.anilib.ui.view.widgets.AlCardView
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.app.theme.contrastAccentWithSurface
 import com.revolgenx.anilib.common.preference.enableAutoMlTranslation
+import com.revolgenx.anilib.common.preference.hideGlobalRating
 import com.revolgenx.anilib.common.preference.enableMlTranslation
 import com.revolgenx.anilib.common.preference.inUseMlLanguageModel
 import com.revolgenx.anilib.constant.*
@@ -328,8 +329,18 @@ class MediaOverviewFragment : BaseLayoutFragment<MediaOverviewFragmentBinding>()
                 addToMediaCollection(getString(R.string.hashtag), it)
             }
 
-            addToMediaCollection(R.string.average_score, "${overview.averageScore ?: 0} %")
-            addToMediaCollection(R.string.mean_score, "${overview.meanScore ?: 0} %")
+            // both of these are everyone else's scores, so they follow the same spoiler
+            // preference as the score badges on the browse screens
+            addToMediaCollection(
+                R.string.average_score,
+                "${overview.averageScore ?: 0} %",
+                isSpoiler = hideGlobalRating()
+            )
+            addToMediaCollection(
+                R.string.mean_score,
+                "${overview.meanScore ?: 0} %",
+                isSpoiler = hideGlobalRating()
+            )
             addToMediaCollection(R.string.popularity, "${overview.popularity ?: 0}")
             addToMediaCollection(R.string.favourites, "${overview.favourites ?: 0}")
 
@@ -462,10 +473,15 @@ class MediaOverviewFragment : BaseLayoutFragment<MediaOverviewFragmentBinding>()
         })
     }
 
-    private fun addToMediaCollection(@StringRes header: Int, subtitle: String) {
+    private fun addToMediaCollection(
+        @StringRes header: Int,
+        subtitle: String,
+        isSpoiler: Boolean = false
+    ) {
         mediaMetaList.add(MediaMetaCollection().also { col ->
             col.header = requireContext().getString(header)
             col.subTitle = subtitle
+            col.isSpoiler = isSpoiler
         })
     }
 

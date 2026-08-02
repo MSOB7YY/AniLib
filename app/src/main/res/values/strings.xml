@@ -234,6 +234,10 @@
     <string name="notification_interval_desc">Checks if there is any notification after specified time interval.</string>
     <string name="preferred_media_title">Select preferred media title(AniList setting will override this after login)</string>
     <string name="cover_image_quality">Cover Image Quality</string>
+    <string name="hide_global_rating">Hide global rating</string>
+    <string name="hide_global_rating_desc">Hide the average score behind an eye icon. Tap it to reveal the rating. Scores you gave yourself are always shown.</string>
+    <string name="show_rating">Show rating</string>
+    <string name="tap_to_show">Tap to show</string>
     <string name="preferred_image_quality_desc">Select your preferred image quality</string>
     <string name="advanced_scores">Advanced Scores</string>
     <string name="copied_to_clipboard">Copied to clipboard</string>

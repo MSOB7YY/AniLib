@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import com.otaliastudios.elements.Element
 import com.otaliastudios.elements.Page
+import com.revolgenx.anilib.R
 import com.revolgenx.anilib.media.data.model.MediaMetaCollection
 import com.revolgenx.anilib.databinding.MediaMetaPresenterLayoutBinding
 import com.revolgenx.anilib.common.presenter.BasePresenter
@@ -30,7 +31,25 @@ class MediaMetaPresenter(context: Context) : BasePresenter<MediaMetaPresenterLay
         holder.itemView.apply {
             binding.header.title = item.header
             binding.header.subtitleView?.movementMethod = LinkMovementMethod.getInstance()
-            binding.header.subtitle = item.subTitle ?: item.subTitleSpannable
+            binding.bindSubtitle(item)
+
+            if (item.isSpoiler) {
+                setOnClickListener {
+                    item.isRevealed = !item.isRevealed
+                    binding.bindSubtitle(item)
+                }
+            } else {
+                setOnClickListener(null)
+                isClickable = false
+            }
+        }
+    }
+
+    private fun MediaMetaPresenterLayoutBinding.bindSubtitle(item: MediaMetaCollection) {
+        header.subtitle = if (item.isSpoiler && !item.isRevealed) {
+            context.getString(R.string.tap_to_show)
+        } else {
+            item.subTitle ?: item.subTitleSpannable
         }
     }
 }

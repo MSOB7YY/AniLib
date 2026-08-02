@@ -304,11 +304,13 @@ class MediaInfoContainerFragment : BaseLayoutFragment<MediaInfoContainerFragment
         media.let {
             if (loadLegacyMediaBrowseTheme()) {
                 legacyMediaTitleTv.text = media.title ?: ""
-                legacyMediaBrowserCoverImage.setImageURI(media.coverImage)
+                // the header cover is rendered far larger than a list thumbnail, so always take
+                // the biggest url rather than whatever the quality preference picked for lists
+                legacyMediaBrowserCoverImage.setImageURI(media.coverImageLarge ?: media.coverImage)
                 legacyMediaBrowserBannerImage.setImageURI(media.bannerImage)
             } else {
                 mediaTitleTv.text = media.title ?: ""
-                mediaBrowserCoverImage.setImageURI(media.coverImage)
+                mediaBrowserCoverImage.setImageURI(media.coverImageLarge ?: media.coverImage)
                 mediaBrowserBannerImage.setImageURI(media.bannerImage)
             }
         }
