@@ -73,11 +73,21 @@
         android:layout_height="match_parent"
         app:adt_colorType="accent_dark">
 
+        <!--
+            fastScroll gives a thumb that can be dragged to move through the list. RecyclerView
+            requires all four drawables to be set whenever it is enabled, or it throws on inflate.
+        -->
         <com.pranavpandey.android.dynamic.support.widget.DynamicRecyclerView
             android:id="@+id/al_list_recycler_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            app:adt_windowInsets="false" />
+            android:scrollbars="vertical"
+            app:adt_windowInsets="false"
+            app:fastScrollEnabled="true"
+            app:fastScrollHorizontalThumbDrawable="@drawable/fast_scroll_thumb"
+            app:fastScrollHorizontalTrackDrawable="@drawable/fast_scroll_track"
+            app:fastScrollVerticalThumbDrawable="@drawable/fast_scroll_thumb"
+            app:fastScrollVerticalTrackDrawable="@drawable/fast_scroll_track" />
 
         <com.pranavpandey.android.dynamic.support.widget.DynamicExtendedFloatingActionButton
             android:id="@+id/list_extended_fab"

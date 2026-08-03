@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import androidx.core.widget.doOnTextChanged
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.otaliastudios.elements.Adapter
 import com.otaliastudios.elements.Presenter
 import com.otaliastudios.elements.Source
@@ -24,6 +25,7 @@ import com.revolgenx.anilib.list.bottomsheet.MediaListDisplaySelectorBottomSheet
 import com.revolgenx.anilib.type.MediaType
 import com.revolgenx.anilib.list.viewmodel.MediaListCollectionVM
 import com.revolgenx.anilib.list.viewmodel.MediaListContainerSharedVM
+import com.revolgenx.anilib.list.viewmodel.MediaListScroller
 import com.revolgenx.anilib.list.bottomsheet.MediaListGroupSelectorBottomSheet
 import com.revolgenx.anilib.list.data.model.MediaListModel
 import com.revolgenx.anilib.list.viewmodel.MediaListCollectionContainerCallback
@@ -79,20 +81,25 @@ abstract class BaseMediaListCollectionFragment() :
         viewModel.field.userName = containerSharedVM.userName
         binding.onBind()
 
-        when (mediaType) {
-            MediaType.ANIME -> {
-                containerSharedVM.animeListNavigateToTop = {
-                    binding.alListRecyclerView.smoothScrollToPosition(0)
-                }
-            }
-            MediaType.MANGA -> {
-                containerSharedVM.mangaListNavigateToTop = {
-                    binding.alListRecyclerView.smoothScrollToPosition(0)
-                }
-            }
+        val scroller = object : MediaListScroller {
+            override fun isAtTop() = binding.alListRecyclerView.computeVerticalScrollOffset() == 0
+            override fun scrollToTop() = binding.alListRecyclerView.scrollToTop()
+            override fun scrollToBottom() = binding.alListRecyclerView.scrollToBottom()
+        }
 
+        when (mediaType) {
+            MediaType.ANIME -> containerSharedVM.animeListScroller = scroller
+            MediaType.MANGA -> containerSharedVM.mangaListScroller = scroller
             else -> {}
         }
+    }
+
+    private fun RecyclerView.scrollToTop() = scrollToPosition(0)
+
+    private fun RecyclerView.scrollToBottom() {
+        val lastIndex = (adapter?.itemCount ?: 0) - 1
+        if (lastIndex < 0) return
+        scrollToPosition(lastIndex)
     }
 
     private fun loadLayoutManager() {

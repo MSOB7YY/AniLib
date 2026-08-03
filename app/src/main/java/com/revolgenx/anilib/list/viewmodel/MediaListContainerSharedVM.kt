@@ -12,8 +12,18 @@ class MediaListContainerSharedVM : ViewModel() {
     var currentGroupNameWithCount = MutableLiveData<Pair<String, Int>?>()
     var mediaListContainerCallback = MutableLiveData<Pair<MediaListCollectionContainerCallback, Int>>()
 
-    var animeListNavigateToTop: (()->Unit)? = null
-    var mangaListNavigateToTop: (()->Unit)? = null
+    var animeListScroller: MediaListScroller? = null
+    var mangaListScroller: MediaListScroller? = null
+}
+
+/**
+ * Lets the container scroll a list it does not own. Each list lives in a pager child fragment, so
+ * the container has no handle on the recycler view itself.
+ */
+interface MediaListScroller {
+    fun isAtTop(): Boolean
+    fun scrollToTop()
+    fun scrollToBottom()
 }
 
 enum class MediaListCollectionContainerCallback{

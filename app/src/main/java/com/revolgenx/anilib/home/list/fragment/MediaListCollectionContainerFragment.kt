@@ -27,6 +27,7 @@ import com.revolgenx.anilib.list.fragment.BaseMediaListCollectionFragment
 import com.revolgenx.anilib.list.fragment.MangaListCollectionFragment
 import com.revolgenx.anilib.list.viewmodel.MediaListCollectionContainerCallback
 import com.revolgenx.anilib.list.viewmodel.MediaListContainerSharedVM
+import com.revolgenx.anilib.list.viewmodel.MediaListScroller
 import com.revolgenx.anilib.notification.viewmodel.NotificationStoreViewModel
 import com.revolgenx.anilib.type.MediaType
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
@@ -49,6 +50,13 @@ class MediaListCollectionContainerFragment :
     private val badgeDrawable by lazy {
         BadgeDrawable.create(requireContext())
     }
+
+    /** The scroller belonging to whichever list page the pager is currently showing. */
+    private val currentScroller: MediaListScroller?
+        get() = when (binding.alListViewPager.currentItem) {
+            0 -> sharedViewModel.animeListScroller
+            else -> sharedViewModel.mangaListScroller
+        }
 
     override fun bindView(
         inflater: LayoutInflater,
@@ -168,18 +176,16 @@ class MediaListCollectionContainerFragment :
                 mainSharedVM.mediaListCurrentTab.value = null
             }
 
+            // re-tapping the list tab toggles: it goes to the top, but when already there it
+            // goes to the bottom instead, so one button covers both ends of a long list
             mainSharedVM.listNavigateToTopListener = goToTop@{
                 context ?: return@goToTop
-                when(alListViewPager.currentItem){
-                    0->{
-                        sharedViewModel.animeListNavigateToTop?.invoke()
-                    }
-                    1->{
-                        sharedViewModel.mangaListNavigateToTop?.invoke()
-                    }
+                val scroller = currentScroller ?: return@goToTop
+                if (scroller.isAtTop()) {
+                    scroller.scrollToBottom()
+                } else {
+                    scroller.scrollToTop()
                 }
-
-
             }
         }
     }

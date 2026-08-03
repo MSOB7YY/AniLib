@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Track behind the fast scroller thumb. Kept nearly invisible so it does not compete with the
+    cover art, but present because RecyclerView requires a track drawable to enable fast scrolling.
+-->
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle">
+
+    <size
+        android:width="8dp"
+        android:height="48dp" />
+    <solid android:color="#1F888888" />
+    <corners android:radius="4dp" />
+
+</shape>

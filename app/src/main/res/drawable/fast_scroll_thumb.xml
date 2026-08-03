@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Draggable thumb for the RecyclerView fast scroller. RecyclerView asks for a horizontal and a
+    vertical thumb separately, but both use this one since only vertical scrolling is possible here.
+
+    Neutral grey rather than the accent colour so it stays out of the way of the cover art, and
+    only firms up while it is actually being dragged.
+-->
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:state_pressed="true">
+        <shape android:shape="rectangle">
+            <size
+                android:width="8dp"
+                android:height="48dp" />
+            <solid android:color="#66888888" />
+            <corners android:radius="4dp" />
+        </shape>
+    </item>
+
+    <item>
+        <shape android:shape="rectangle">
+            <size
+                android:width="8dp"
+                android:height="48dp" />
+            <solid android:color="#33888888" />
+            <corners android:radius="4dp" />
+        </shape>
+    </item>
+
+</selector>
