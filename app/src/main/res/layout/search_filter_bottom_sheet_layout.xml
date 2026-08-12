@@ -338,6 +338,14 @@
                     app:intermediate_mode="true"
                     app:text="@string/hentai_only" />
 
+                <com.revolgenx.anilib.ui.view.widgets.checkbox.AlCheckBox
+                    android:id="@+id/on_list_checkbox"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    app:intermediate_mode="true"
+                    app:text="@string/on_list" />
+
             </LinearLayout>
 
             <LinearLayout

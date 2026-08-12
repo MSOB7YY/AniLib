@@ -28,7 +28,8 @@ query MediaSearchQuery(
     $volumesLesser:Int,
     $durationLesser:Int,
     $durationGreater:Int,
-    $minimumTagRank:Int
+    $minimumTagRank:Int,
+    $onList:Boolean
 ){
     page: Page(page:$page,perPage:$perPage){
         media(
@@ -58,7 +59,8 @@ query MediaSearchQuery(
             duration_greater: $durationGreater,
             duration_lesser: $durationLesser,
             isLicensed: $isLicensed,
-            minimumTagRank: $minimumTagRank
+            minimumTagRank: $minimumTagRank,
+            onList: $onList
         ){
             ... on Media{
                 ... mediaContent

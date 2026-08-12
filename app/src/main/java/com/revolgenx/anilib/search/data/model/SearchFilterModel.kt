@@ -30,7 +30,8 @@ data class SearchFilterModel(
     var tagsIn: MutableList<String>? = null,
     var tagsNotIn: MutableList<String>? = null,
     var sort: Int? = null,
-    var minimumTagRank: Int? = null
+    var minimumTagRank: Int? = null,
+    var onList: Boolean? = null
 ){
 
 }

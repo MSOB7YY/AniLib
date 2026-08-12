@@ -207,6 +207,9 @@ class SearchFilterBottomSheet : DynamicBottomSheetFragment<SearchFilterBottomShe
 
         doujinCheckbox.isChecked = filterModel.doujins == true
 
+        onListCheckbox.visibility = if (loggedIn()) View.VISIBLE else View.GONE
+        onListCheckbox.updateState(if (filterModel.onList == null) false else filterModel.onList?.takeIf { it })
+
         val alMediaSorts = AlMediaSort.values()
         val alMediaSortList = requireContext().resources.getStringArray(R.array.al_media_sort)
 
@@ -360,6 +363,14 @@ class SearchFilterBottomSheet : DynamicBottomSheetFragment<SearchFilterBottomShe
             context ?: return@check
 
             filterModel.isHentai = it.takeIf { it != AlCheckBox.CheckBoxState.UNCHECKED }?.let {
+                it == AlCheckBox.CheckBoxState.CHECKED
+            }
+        }
+
+        onListCheckbox.onCheckChangeListener = check@{
+            context ?: return@check
+
+            filterModel.onList = it.takeIf { it != AlCheckBox.CheckBoxState.UNCHECKED }?.let {
                 it == AlCheckBox.CheckBoxState.CHECKED
             }
         }

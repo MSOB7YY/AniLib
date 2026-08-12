@@ -41,7 +41,8 @@ class SearchField : BaseSourceField<Any>() {
                         country = nn(countryOfOrigin?.let { CountryOfOrigins.values()[it].name }),
                         sort = nn(sort?.let { listOf(MediaSort.values()[it]) }),
                         source = nn(source?.let { MediaSource.values()[it] }),
-                        minimumTagRank = nn(minimumTagRank)
+                        minimumTagRank = nn(minimumTagRank),
+                        onList = nn(onList)
                     )
                 }
                 SearchTypes.MANGA -> {
@@ -70,7 +71,8 @@ class SearchField : BaseSourceField<Any>() {
                         country = nn(countryOfOrigin?.let { CountryOfOrigins.values()[it].name }),
                         sort = nn(sort?.let { listOf(MediaSort.values()[it]) }),
                         source = nn(source?.let { MediaSource.values()[it] }),
-                        minimumTagRank = nn(minimumTagRank)
+                        minimumTagRank = nn(minimumTagRank),
+                        onList = nn(onList)
                     )
                 }
                 SearchTypes.CHARACTER -> {

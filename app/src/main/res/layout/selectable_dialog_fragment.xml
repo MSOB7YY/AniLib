@@ -1,9 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.pranavpandey.android.dynamic.support.widget.DynamicRecyclerView xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/selectable_recycler_view"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:orientation="vertical"
     android:paddingLeft="10dp"
-    android:paddingRight="10dp"
-    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+    android:paddingRight="10dp">
+
+    <com.revolgenx.anilib.ui.view.widgets.AlCardView
+        android:id="@+id/selectable_search_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:cardUseCompatPadding="true">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="44dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <com.pranavpandey.android.dynamic.support.widget.DynamicImageView
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:padding="10dp"
+                android:src="@drawable/ic_search"
+                app:adt_colorType="tint_background" />
+
+            <com.pranavpandey.android.dynamic.support.widget.DynamicEditText
+                android:id="@+id/selectable_search_et"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@null"
+                android:hint="@string/search"
+                android:imeOptions="actionSearch"
+                android:inputType="text"
+                android:maxLines="1"
+                android:textSize="14sp" />
+        </LinearLayout>
+    </com.revolgenx.anilib.ui.view.widgets.AlCardView>
+
+    <com.pranavpandey.android.dynamic.support.widget.DynamicRecyclerView
+        android:id="@+id/selectable_recycler_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+</LinearLayout>

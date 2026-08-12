@@ -4,6 +4,7 @@ import android.app.AlertDialog
 import android.content.DialogInterface
 import android.os.Bundle
 import androidx.core.os.bundleOf
+import androidx.core.widget.doOnTextChanged
 import com.otaliastudios.elements.Adapter
 import com.otaliastudios.elements.Source
 import com.pranavpandey.android.dynamic.support.dialog.DynamicDialog
@@ -45,19 +46,29 @@ class SelectableDialogFragment : BaseDialogFragment<SelectableDialogFragmentBind
         SelectableItemPresenter(requireContext(), hasIntermediaMode)
     }
 
+    private var searchQuery: String = ""
+
+    private val filteredItems
+        get() = if (searchQuery.isEmpty()) selectableItems
+        else selectableItems.filter { it.first.contains(searchQuery, true) }
+
     override fun bindView(): SelectableDialogFragmentBinding {
         return SelectableDialogFragmentBinding.inflate(provideLayoutInflater)
     }
 
     override fun builder(dialogBuilder: DynamicDialog.Builder, savedInstanceState: Bundle?) {
         selectableMeta ?: return
+        binding.selectableSearchEt.doOnTextChanged { text, _, _, _ ->
+            searchQuery = text?.toString().orEmpty()
+            invalidateAdapter()
+        }
         invalidateAdapter()
     }
 
     private fun invalidateAdapter() {
         Adapter.builder(this)
             .addPresenter(selectorPresenter)
-            .addSource(Source.fromList(selectableItems))
+            .addSource(Source.fromList(filteredItems))
             .into(binding.selectableRecyclerView)
     }
 
