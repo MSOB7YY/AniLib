@@ -186,6 +186,7 @@ android {
 dependencies {
     implementation("androidx.core:core-ktx:1.10.1")
     implementation("androidx.constraintlayout:constraintlayout:2.0.4")
+    implementation("androidx.swiperefreshlayout:swiperefreshlayout:1.1.0")
 
     //apollo
     implementation("com.apollographql.apollo3:apollo-runtime:${LibraryVersion.apollo_version}")

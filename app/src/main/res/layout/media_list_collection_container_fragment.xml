@@ -45,16 +45,27 @@
             android:layout_height="match_parent" />
     </com.pranavpandey.android.dynamic.support.widget.DynamicViewPager2Layout>
 
-    <com.pranavpandey.android.dynamic.support.widget.DynamicButton
-        android:id="@+id/list_extended_fab"
-        android:layout_width="wrap_content"
-        android:layout_height="56dp"
-        android:layout_gravity="bottom|end"
-        android:layout_margin="@dimen/ads_fab_margin"
-        android:text="@string/all"
-        app:adt_colorType="surface"
-        app:adt_contrastWithColorType="background"
-        app:iconPadding="4dp"
-        app:layout_behavior="@string/hide_bottom_view_on_scroll_behavior" />
+    <HorizontalScrollView
+        android:id="@+id/list_group_scroll_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:clipToPadding="false"
+        android:paddingStart="8dp"
+        android:paddingTop="4dp"
+        android:paddingEnd="8dp"
+        android:paddingBottom="8dp"
+        android:scrollbars="none">
+
+        <com.google.android.material.chip.ChipGroup
+            android:id="@+id/list_group_chip_group"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:chipSpacingHorizontal="6dp"
+            app:selectionRequired="true"
+            app:singleLine="true"
+            app:singleSelection="true" />
+
+    </HorizontalScrollView>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

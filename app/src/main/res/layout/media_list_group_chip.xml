@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.revolgenx.anilib.ui.view.widgets.chip.MediaListGroupChip xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:checkable="true"
+    android:textSize="12sp"
+    app:chipEndPadding="10dp"
+    app:chipIconSize="16dp"
+    app:chipMinHeight="30dp"
+    app:chipStartPadding="10dp"
+    app:ensureMinTouchTargetSize="false"
+    app:iconEndPadding="0dp"
+    app:iconStartPadding="0dp"
+    app:textEndPadding="2dp"
+    app:textStartPadding="6dp"
+    tools:ignore="SmallSp" />

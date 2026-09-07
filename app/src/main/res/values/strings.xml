@@ -67,6 +67,7 @@
     <string name="delete">Delete</string>
     <string name="toggle_fav">Toggle Favourite</string>
     <string name="operation_failed">Operation failed.</string>
+    <string name="showing_offline_data">Offline data</string>
     <string name="type">Type</string>
     <string name="source">Source</string>
     <string name="episodes">Episodes</string>

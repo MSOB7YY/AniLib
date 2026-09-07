@@ -15,6 +15,7 @@ import com.otaliastudios.elements.Source
 import com.otaliastudios.elements.pagers.NoPagesPager
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.common.preference.*
+import com.revolgenx.anilib.common.repository.network.OfflineCacheState
 import com.revolgenx.anilib.common.ui.fragment.BaseLayoutFragment
 import com.revolgenx.anilib.common.viewmodel.getViewModelOwner
 import com.revolgenx.anilib.constant.MediaListDisplayMode
@@ -30,6 +31,7 @@ import com.revolgenx.anilib.list.bottomsheet.MediaListGroupSelectorBottomSheet
 import com.revolgenx.anilib.list.data.model.MediaListModel
 import com.revolgenx.anilib.list.viewmodel.MediaListCollectionContainerCallback
 import com.revolgenx.anilib.list.viewmodel.MediaListCollectionStoreVM
+import com.revolgenx.anilib.list.viewmodel.MediaListGroupState
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 
@@ -126,24 +128,9 @@ abstract class BaseMediaListCollectionFragment() :
                             ?.toList()
                             ?.map { it to (it.first == viewModel.currentGroupNameHistory) }
                             ?.let {
-                                MediaListGroupSelectorBottomSheet.newInstance(
-                                    it
-                                ) {
+                                MediaListGroupSelectorBottomSheet.newInstance(it) { selected ->
                                     if (context == null) return@newInstance
-
-                                    if (it == viewModel.currentGroupNameHistory) return@newInstance
-
-                                    if (isLoggedInUser) {
-                                        if (mediaType == MediaType.ANIME) {
-                                            animeListStatusHistory(it)
-                                        } else {
-                                            mangaListStatusHistory(it)
-                                        }
-                                    } else {
-                                        viewModel.groupNameHistory = it
-                                    }
-                                    updateCurrentGroupWithCount()
-                                    viewModel.filter()
+                                    selectGroup(selected)
                                 }.show(requireContext())
                             }
                     }
@@ -192,6 +179,16 @@ abstract class BaseMediaListCollectionFragment() :
             updateCurrentGroupWithCount()
         }
 
+        containerSharedVM.groupSelection.observe(viewLifecycleOwner) {
+            if (it == null || it.second != mediaType.ordinal) return@observe
+            selectGroup(it.first)
+            containerSharedVM.groupSelection.value = null
+        }
+
+        OfflineCacheState.servingCachedData.observe(viewLifecycleOwner) {
+            alListOfflineView.visibility = if (it) View.VISIBLE else View.GONE
+        }
+
         alListSwipeToRefresh.setOnRefreshListener {
             viewModel.getMediaList()
         }
@@ -219,9 +216,32 @@ abstract class BaseMediaListCollectionFragment() :
     }
 
     private fun updateCurrentGroupWithCount() {
-        containerSharedVM.currentGroupNameWithCount.value = viewModel.groupNamesWithCount.value
-            ?.get(viewModel.currentGroupNameHistory)
-            ?.let { viewModel.currentGroupNameHistory!! to it }
+        val groupNamesWithCount = viewModel.groupNamesWithCount.value
+        val currentGroupName = viewModel.currentGroupNameHistory
+
+        containerSharedVM.currentGroupNameWithCount.value = groupNamesWithCount
+            ?.get(currentGroupName)
+            ?.let { currentGroupName!! to it }
+
+        containerSharedVM.groupState(mediaType).value = groupNamesWithCount?.let {
+            MediaListGroupState(it.toList(), currentGroupName)
+        }
+    }
+
+    private fun selectGroup(groupName: String) {
+        if (groupName == viewModel.currentGroupNameHistory) return
+
+        if (isLoggedInUser) {
+            if (mediaType == MediaType.ANIME) {
+                animeListStatusHistory(groupName)
+            } else {
+                mangaListStatusHistory(groupName)
+            }
+        } else {
+            viewModel.groupNameHistory = groupName
+        }
+        updateCurrentGroupWithCount()
+        viewModel.filter()
     }
 
 

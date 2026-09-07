@@ -34,6 +34,7 @@ import com.revolgenx.anilib.type.MediaType
 import com.revolgenx.anilib.type.ScoreFormat
 import com.revolgenx.anilib.ui.view.GenreLayout
 import com.revolgenx.anilib.ui.view.makeToast
+import com.revolgenx.anilib.ui.view.setProgressUpdating
 import com.revolgenx.anilib.ui.view.score.MediaScoreBadge
 import com.revolgenx.anilib.util.loginContinue
 import com.revolgenx.anilib.util.naText
@@ -174,7 +175,7 @@ class MediaListCollectionPresenter(
 
             if (isLoggedInUser) {
                 mediaListProgressIncrease?.visibility = View.VISIBLE
-
+                mediaListProgressIncrease?.setProgressUpdating(item.isProgressUpdating)
             } else {
                 mediaListProgressIncrease?.visibility = View.GONE
             }
@@ -249,10 +250,12 @@ class MediaListCollectionPresenter(
             }
 
             mediaListProgressIncrease?.setOnClickListener {
+                if (item.isProgressUpdating) return@setOnClickListener
                 viewModel.increaseProgress(item)
             }
 
             item.onDataChanged = {
+                mediaListProgressIncrease?.setProgressUpdating(item.isProgressUpdating)
                 when(it){
                     is Resource.Success -> {
                         progressTv?.updateProgressView(item)

@@ -13,7 +13,7 @@
             <size
                 android:width="8dp"
                 android:height="48dp" />
-            <solid android:color="#66888888" />
+            <solid android:color="#99888888" />
             <corners android:radius="4dp" />
         </shape>
     </item>
@@ -23,7 +23,7 @@
             <size
                 android:width="8dp"
                 android:height="48dp" />
-            <solid android:color="#33888888" />
+            <solid android:color="#66888888" />
             <corners android:radius="4dp" />
         </shape>
     </item>

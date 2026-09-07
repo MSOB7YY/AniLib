@@ -1,0 +1,40 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "type": "process",
+      "command": "${workspaceFolder}\\gradlew.bat",
+      "args": [
+        "assembleStandardRelease"
+      ],
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      },
+      "problemMatcher": [],
+      "label": "Build arm64 release APK",
+      "detail": "assembleStandardRelease, the abi split is arm64-v8a only"
+    },
+    {
+      "type": "process",
+      "command": "powershell",
+      "args": [
+        "-NoProfile",
+        "-ExecutionPolicy",
+        "Bypass",
+        "-Command",
+        "$apk = Get-ChildItem -Path '${workspaceFolder}\\app\\build\\outputs\\apk\\standard\\release\\*arm64*.apk' | Select-Object -First 1; $connected = (adb devices | Select-Object -Skip 1 | Where-Object { $_ -match 'device' } | ForEach-Object { $_.Trim().Split()[0] }); Write-Host \"Connected: $connected\"; @('55t445caskvcai5x','5c12eba1') | Where-Object { $connected -contains $_ } | ForEach-Object { Write-Host \"Pushing to $_\"; adb -s $_ push $apk.FullName /sdcard/ }"
+      ],
+      "group": {
+        "kind": "build",
+        "isDefault": false
+      },
+      "problemMatcher": [],
+      "label": "Push arm64 APK to device",
+      "detail": ""
+    }
+  ]
+}

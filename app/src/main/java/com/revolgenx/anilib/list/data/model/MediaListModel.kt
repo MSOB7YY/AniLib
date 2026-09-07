@@ -33,6 +33,9 @@ class MediaListModel : BaseModel() {
     var media: MediaModel? = null
     var user: UserModel? = null
 
+    /** True while a progress increment is in flight, so a recycled row keeps showing the spinner. */
+    var isProgressUpdating = false
+
     var onDataChanged: ((Resource<MediaListModel>) -> Unit)? = null
 }
 

@@ -14,10 +14,14 @@ fun MediaListEntryService.increaseProgress(
         it.id = item.id
         it.progress = newProgress
     }
+    item.isProgressUpdating = true
+    item.onDataChanged?.invoke(Resource.loading(item))
+
     saveMediaListEntry(progressSaveField, compositeDisposable) {
         if (it is Resource.Success) {
             item.progress = it.data?.progress ?: newProgress
         }
+        item.isProgressUpdating = false
         item.onDataChanged?.invoke(it)
     }
 }

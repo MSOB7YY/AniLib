@@ -26,6 +26,7 @@ import com.revolgenx.anilib.home.discover.viewmodel.MediaListVM
 import com.revolgenx.anilib.media.data.model.isAnime
 import com.revolgenx.anilib.search.data.model.SearchFilterEventModel
 import com.revolgenx.anilib.ui.view.makeToast
+import com.revolgenx.anilib.ui.view.setProgressUpdating
 import com.revolgenx.anilib.util.loginContinue
 import com.revolgenx.anilib.util.naText
 
@@ -106,11 +107,15 @@ class MediaListPresenter(
             }
 
             if (isLoggedInUser) {
+                mediaListProgressIncrease.setProgressUpdating(item.isProgressUpdating)
+
                 mediaListProgressIncrease.setOnClickListener {
+                    if (item.isProgressUpdating) return@setOnClickListener
                     viewModel.increaseProgress(item)
                 }
 
                 item.onDataChanged = {
+                    mediaListProgressIncrease.setProgressUpdating(item.isProgressUpdating)
                     when (it) {
                         is Resource.Success -> {
                             mediaListProgressTv.updateProgressView(item)

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
@@ -57,6 +58,34 @@
 
     </com.revolgenx.anilib.ui.view.widgets.AlCardView>
 
+    <LinearLayout
+        android:id="@+id/al_list_offline_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="4dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:visibility="gone">
+
+        <com.pranavpandey.android.dynamic.support.widget.DynamicImageView
+            android:layout_width="12dp"
+            android:layout_height="12dp"
+            android:layout_marginEnd="5dp"
+            app:adt_colorType="accent"
+            app:srcCompat="@drawable/ic_error" />
+
+        <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/showing_offline_data"
+            android:textSize="11sp"
+            app:adt_colorType="accent"
+            tools:ignore="SmallSp" />
+
+    </LinearLayout>
+
     <include
         android:id="@+id/empty_layout"
         layout="@layout/empty_layout"
@@ -76,12 +105,15 @@
         <!--
             fastScroll gives a thumb that can be dragged to move through the list. RecyclerView
             requires all four drawables to be set whenever it is enabled, or it throws on inflate.
+            The platform scrollbar is off, otherwise it draws its own squared thumb underneath.
         -->
-        <com.pranavpandey.android.dynamic.support.widget.DynamicRecyclerView
+        <com.revolgenx.anilib.ui.view.widgets.AlRecyclerView
             android:id="@+id/al_list_recycler_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:scrollbars="vertical"
+            android:clipToPadding="false"
+            android:paddingBottom="48dp"
+            android:scrollbars="none"
             app:adt_windowInsets="false"
             app:fastScrollEnabled="true"
             app:fastScrollHorizontalThumbDrawable="@drawable/fast_scroll_thumb"

@@ -21,7 +21,7 @@ class MediaScoreBadge : LinearLayout {
     private var scoreTv: DynamicTextView
     private var isListScore = false
 
-    private val scoreImageMarginEnd = dp(6f)
+    private val scoreImageMarginEnd get() = dp(3f)
 
     /** What the badge would show if nothing were hidden. */
     private var scoreLabel: String? = null
@@ -173,11 +173,14 @@ class MediaScoreBadge : LinearLayout {
         scoreTv.text = if (hidden) null else scoreLabel
         scoreTv.visibility = if (hidden) View.GONE else _scoreTextVisibility
 
-        // a lone icon should not keep the gap that only exists to separate it from the score
+        // a lone icon should not keep the gap that only exists to separate it from the score.
+        // reassigning the params is what makes it stick: a relative margin is resolved into a left
+        // or right one only when the layout params are set, so writing marginEnd on the params
+        // already in place would leave the badge on whatever gap it was first laid out with.
         val showsText = !hidden && _scoreTextVisibility == View.VISIBLE
-        (scoreImage.layoutParams as LayoutParams).marginEnd =
-            if (showsText) scoreImageMarginEnd else 0
-        scoreImage.requestLayout()
+        scoreImage.layoutParams = (scoreImage.layoutParams as LayoutParams).also {
+            it.marginEnd = if (showsText) scoreImageMarginEnd else 0
+        }
 
         // stay transparent to touches unless there is something to reveal or re-hide, otherwise
         // the badge would swallow taps meant for the row underneath it
