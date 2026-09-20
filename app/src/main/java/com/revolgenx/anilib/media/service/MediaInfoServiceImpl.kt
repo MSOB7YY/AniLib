@@ -46,7 +46,7 @@ class MediaInfoServiceImpl(graphRepository: BaseGraphRepository) :
     override fun getMediaWatch(
         field: MediaWatchField,
         compositeDisposable: CompositeDisposable?,
-        callback: (Resource<List<MediaStreamingEpisodeModel>>) -> Unit
+        callback: (Resource<MediaWatchModel>) -> Unit
     ) {
         val disposable = graphRepository.request(field.toQueryOrMutation())
             .map { response ->

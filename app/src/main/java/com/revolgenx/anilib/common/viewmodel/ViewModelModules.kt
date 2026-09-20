@@ -46,7 +46,7 @@ val viewModelModules = module {
     //media
     viewModel { MediaInfoContainerSharedVM(get(), get()) }
     viewModel { MediaOverviewVM(get(), get()) }
-    viewModel { MediaWatchViewModel(get()) }
+    viewModel { MediaWatchViewModel(get(), get()) }
     viewModel { MediaChronologyVM(get()) }
     viewModel { MediaCharacterVM(get()) }
     viewModel { MediaStaffViewModel(get()) }

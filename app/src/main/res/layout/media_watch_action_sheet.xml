@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.pranavpandey.android.dynamic.support.widget.DynamicLinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/watch_sheet_root"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:paddingStart="16dp"
+    android:paddingTop="16dp"
+    android:paddingEnd="16dp"
+    android:paddingBottom="16dp">
+
+    <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
+        android:id="@+id/watch_sheet_title_tv"
+        style="@style/TitleFontStyle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ellipsize="end"
+        android:maxLines="2"
+        android:textSize="15sp"
+        tools:text="Episode 12" />
+
+    <com.pranavpandey.android.dynamic.support.widget.DynamicLinearLayout
+        android:id="@+id/watch_sheet_filter_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:orientation="vertical"
+        android:visibility="gone">
+
+        <com.pranavpandey.android.dynamic.support.widget.DynamicEditText
+            android:id="@+id/watch_sheet_search_et"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/watch_search_hint"
+            android:imeOptions="actionSearch"
+            android:inputType="text"
+            android:maxLines="1"
+            android:textSize="13sp"
+            tools:ignore="Autofill" />
+
+        <HorizontalScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="6dp"
+            android:clipToPadding="false"
+            android:scrollbars="none">
+
+            <com.google.android.material.chip.ChipGroup
+                android:id="@+id/watch_sheet_sort_chip_group"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:chipSpacingHorizontal="6dp"
+                app:singleLine="true"
+                app:singleSelection="true" />
+
+        </HorizontalScrollView>
+
+    </com.pranavpandey.android.dynamic.support.widget.DynamicLinearLayout>
+
+    <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
+        android:id="@+id/watch_sheet_status_tv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:textSize="12sp"
+        android:visibility="gone"
+        app:adt_colorType="text_secondary"
+        tools:text="Loading" />
+
+    <com.pranavpandey.android.dynamic.support.widget.DynamicNestedScrollView
+        android:id="@+id/watch_sheet_action_scroll_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:adt_windowInsets="false">
+
+        <com.pranavpandey.android.dynamic.support.widget.DynamicLinearLayout
+            android:id="@+id/watch_sheet_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" />
+
+    </com.pranavpandey.android.dynamic.support.widget.DynamicNestedScrollView>
+
+    <com.pranavpandey.android.dynamic.support.widget.DynamicRecyclerView
+        android:id="@+id/watch_sheet_result_recycler_view"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:clipToPadding="false"
+        android:scrollbars="none"
+        app:adt_windowInsets="false" />
+
+    <com.pranavpandey.android.dynamic.support.widget.DynamicLinearLayout
+        android:id="@+id/watch_sheet_footer_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical" />
+
+</com.pranavpandey.android.dynamic.support.widget.DynamicLinearLayout>

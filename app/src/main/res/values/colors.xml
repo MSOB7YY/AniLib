@@ -13,6 +13,9 @@
     <color name="white">#ffffff</color>
     <color name="black">#191919</color>
     <color name="red">#FF5252</color>
+    <color name="watch_seeder_color">#4CAF50</color>
+    <color name="watch_watched_color">#66BB6A</color>
+    <color name="watch_leecher_color">#FF5252</color>
     <color name="transparent_dark">#12000000</color>
     <color name="review_cover_transparent_dark">#4D000000</color>
     <color name="airing_blur_color">#73FFFFFF</color>

@@ -31,11 +31,13 @@ import com.revolgenx.anilib.user.service.UserStatsServiceImpl
 import com.revolgenx.anilib.list.service.MediaListCollectionService
 import com.revolgenx.anilib.media.service.MediaInfoService
 import com.revolgenx.anilib.media.service.MediaInfoServiceImpl
+import com.revolgenx.anilib.media.service.WatchActionService
 import com.revolgenx.anilib.search.service.SearchService
 import com.revolgenx.anilib.search.service.SearchServiceImpl
 import org.koin.dsl.module
 
 val serviceModule = module {
+    factory { WatchActionService(get()) }
     factory<FavouriteService> { FavouriteServiceImpl(get()) }
     factory<RecommendationService> { RecommendationServiceImpl(get()) }
     factory<MediaInfoService> { MediaInfoServiceImpl(get()) }

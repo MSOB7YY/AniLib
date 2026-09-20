@@ -47,4 +47,6 @@
     <dimen name="media_character_name_text_size">13sp</dimen>
     <!--    <dimen name="design_bottom_navigation_height" tools:override="true">@dimen/toolbar_size</dimen>-->
 
+    <dimen name="watch_thumbnail_width">120dp</dimen>
+    <dimen name="watch_thumbnail_width_large">168dp</dimen>
 </resources>

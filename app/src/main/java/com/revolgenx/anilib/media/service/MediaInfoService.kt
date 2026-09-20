@@ -20,7 +20,7 @@ abstract class MediaInfoService(protected val graphRepository: BaseGraphReposito
     abstract fun getMediaWatch(
         field: MediaWatchField,
         compositeDisposable: CompositeDisposable? = null,
-        resourceCallback: (Resource<List<MediaStreamingEpisodeModel>>) -> Unit
+        resourceCallback: (Resource<MediaWatchModel>) -> Unit
     )
 
     abstract fun getMediaCharacter(

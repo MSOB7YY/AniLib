@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingStart="16dp"
+        android:paddingTop="8dp"
+        android:paddingEnd="16dp"
+        android:paddingBottom="32dp">
+
+        <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
+            style="@style/SettingHeaderStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/name" />
+
+        <com.pranavpandey.android.dynamic.support.widget.DynamicEditText
+            android:id="@+id/watch_action_name_et"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="text"
+            android:maxLines="1"
+            android:textSize="14sp"
+            tools:ignore="Autofill,LabelFor" />
+
+        <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
+            style="@style/SettingHeaderStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/watch_action_base_url" />
+
+        <com.pranavpandey.android.dynamic.support.widget.DynamicEditText
+            android:id="@+id/watch_action_url_et"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textUri"
+            android:maxLines="2"
+            android:textSize="14sp"
+            tools:ignore="Autofill,LabelFor" />
+
+        <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
+            style="@style/SettingHeaderStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/watch_action_path" />
+
+        <com.pranavpandey.android.dynamic.support.widget.DynamicEditText
+            android:id="@+id/watch_action_path_et"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="text"
+            android:maxLines="2"
+            android:textSize="14sp"
+            tools:ignore="Autofill,LabelFor" />
+
+        <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
+            style="@style/SettingHeaderStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/watch_action_site" />
+
+        <com.pranavpandey.android.dynamic.support.widget.DynamicEditText
+            android:id="@+id/watch_action_site_et"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="text"
+            android:maxLines="1"
+            android:textSize="14sp"
+            tools:ignore="Autofill,LabelFor" />
+
+        <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
+            style="@style/SettingHeaderStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/watch_action_scope" />
+
+        <com.revolgenx.anilib.ui.view.widgets.AlSpinnerLayout
+            android:id="@+id/watch_action_scope_spinner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
+            style="@style/SettingHeaderStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/watch_action_media_type" />
+
+        <com.revolgenx.anilib.ui.view.widgets.AlSpinnerLayout
+            android:id="@+id/watch_action_type_spinner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <com.pranavpandey.android.dynamic.support.widget.DynamicCheckBox
+            android:id="@+id/watch_action_default_cb"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="@string/watch_action_default" />
+
+        <com.pranavpandey.android.dynamic.support.widget.DynamicCheckBox
+            android:id="@+id/watch_action_enabled_cb"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/watch_action_enabled" />
+
+        <com.pranavpandey.android.dynamic.support.widget.DynamicCheckBox
+            android:id="@+id/watch_action_inline_cb"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/watch_action_inline" />
+
+        <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
+            android:id="@+id/watch_action_inline_note_tv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/watch_action_inline_unsupported"
+            android:textSize="11sp"
+            android:visibility="gone"
+            app:adt_colorType="text_secondary"
+            tools:ignore="SmallSp" />
+
+        <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
+            android:id="@+id/watch_action_filter_header_tv"
+            style="@style/SettingHeaderStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            tools:text="nekoBT filters" />
+
+        <com.pranavpandey.android.dynamic.support.widget.DynamicLinearLayout
+            android:id="@+id/watch_action_filter_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" />
+
+        <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
+            style="@style/SettingHeaderStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/watch_action_params" />
+
+        <com.pranavpandey.android.dynamic.support.widget.DynamicLinearLayout
+            android:id="@+id/watch_action_param_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" />
+
+        <com.pranavpandey.android.dynamic.support.widget.DynamicButton
+            android:id="@+id/watch_action_add_param_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="6dp"
+            android:text="@string/watch_action_add_param"
+            android:textSize="13sp" />
+
+        <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
+            style="@style/SettingHeaderStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/watch_action_preview" />
+
+        <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
+            android:id="@+id/watch_action_preview_tv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="11sp"
+            app:adt_colorType="text_secondary"
+            tools:ignore="SmallSp"
+            tools:text="https://nekobt.to/search?query=Sample" />
+
+    </LinearLayout>
+
+</androidx.core.widget.NestedScrollView>

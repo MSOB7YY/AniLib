@@ -64,6 +64,25 @@ query MediaQuery(
 
 query MediaWatchQuery($mediaId:Int){
     media: Media(id:$mediaId){
+        id
+        idMal
+        type
+        format
+        season
+        seasonYear
+        episodes
+        chapters
+        synonyms
+        title{
+            ... mediaTitle
+        }
+        nextAiringEpisode{
+            episode
+            airingAt
+        }
+        mediaListEntry{
+            progress
+        }
         streamingEpisodes{
             title
             thumbnail

@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.pranavpandey.android.dynamic.support.widget.DynamicLinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="?attr/selectableItemBackground"
+    android:gravity="center_vertical"
+    android:orientation="horizontal"
+    android:paddingTop="12dp"
+    android:paddingBottom="12dp">
+
+    <com.pranavpandey.android.dynamic.support.widget.DynamicImageView
+        android:id="@+id/watch_action_item_iv"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:src="@drawable/ic_link"
+        app:adt_colorType="accent" />
+
+    <com.pranavpandey.android.dynamic.support.widget.DynamicLinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="14dp"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
+        <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
+            android:id="@+id/watch_action_item_title_tv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:textSize="14sp"
+            tools:text="nekoBT" />
+
+        <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
+            android:id="@+id/watch_action_item_subtitle_tv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:textSize="11sp"
+            app:adt_colorType="text_secondary"
+            tools:ignore="SmallSp"
+            tools:text="nekobt.to" />
+
+    </com.pranavpandey.android.dynamic.support.widget.DynamicLinearLayout>
+
+</com.pranavpandey.android.dynamic.support.widget.DynamicLinearLayout>

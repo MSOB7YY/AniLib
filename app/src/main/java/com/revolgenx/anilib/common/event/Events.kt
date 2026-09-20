@@ -15,10 +15,11 @@ data class OpenMediaChronologyEvent(val meta: MediaInfoMeta) : BaseEvent()
 data class OpenMediaListEditorEvent(val mediaId:Int) : BaseEvent()
 data class OpenSettingEvent(val settingEventType: SettingEventTypes, val data:SettingEventData?= null) : BaseEvent()
 enum class SettingEventTypes {
-    ABOUT, MEDIA_LIST, MEDIA_SETTING, APPLICATION, SETTING, THEME, CUSTOMIZE_FILTER, ADD_REMOVE_TAG_FILTER, AIRING_WIDGET, TRANSLATION, NOTIFICATION, LANGUAGE_CHOOSER
+    ABOUT, MEDIA_LIST, MEDIA_SETTING, APPLICATION, SETTING, THEME, CUSTOMIZE_FILTER, ADD_REMOVE_TAG_FILTER, AIRING_WIDGET, TRANSLATION, NOTIFICATION, LANGUAGE_CHOOSER, WATCH_ACTION, WATCH_ACTION_EDIT
 }
 interface SettingEventData
 data class TagSettingEventMeta(val meta: TagFilterSettingMeta):SettingEventData
+data class WatchActionEventMeta(val actionId: String?) : SettingEventData
 
 class OpenSearchEvent(val data: SearchFilterEventModel? = null) : BaseEvent()
 data class OpenReviewEvent(val reviewId: Int) : BaseEvent()

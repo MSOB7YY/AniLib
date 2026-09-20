@@ -61,6 +61,10 @@ class SettingFragment : BaseToolbarFragment<SettingFragmentLayoutBinding>() {
             OpenSettingEvent(SettingEventTypes.AIRING_WIDGET).postEvent
         }
 
+        binding.watchActionSetting.setOnClickListener {
+            OpenSettingEvent(SettingEventTypes.WATCH_ACTION).postEvent
+        }
+
         binding.translationSetting.setOnClickListener {
             OpenSettingEvent(SettingEventTypes.TRANSLATION).postEvent
         }

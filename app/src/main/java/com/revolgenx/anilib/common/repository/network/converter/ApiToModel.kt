@@ -28,15 +28,30 @@ fun BasicUserQuery.User.toBasicUserModel() = UserModel().also {
 }
 
 
-fun MediaWatchQuery.Media.toModel() = streamingEpisodes?.mapNotNull {ep->
-    ep?.let {
-        MediaStreamingEpisodeModel().also { model ->
-            model.site = it.site
-            model.thumbnail = it.thumbnail
-            model.title = it.title
-            model.url = it.url
+fun MediaWatchQuery.Media.toModel() = MediaWatchModel().also { model ->
+    model.mediaId = id
+    model.idMal = idMal
+    model.type = type?.ordinal
+    model.format = format?.ordinal
+    model.season = season?.ordinal
+    model.seasonYear = seasonYear
+    model.episodes = episodes
+    model.chapters = chapters
+    model.title = title?.mediaTitle?.toModel()
+    model.synonyms = synonyms?.filterNotNull()
+    model.nextAiringEpisode = nextAiringEpisode?.episode
+    model.nextAiringAt = nextAiringEpisode?.airingAt?.toLong()
+    model.progress = mediaListEntry?.progress ?: 0
+    model.streamingEpisodes = streamingEpisodes?.mapNotNull { ep ->
+        ep?.let {
+            MediaStreamingEpisodeModel().also { stream ->
+                stream.site = it.site
+                stream.thumbnail = it.thumbnail
+                stream.title = it.title
+                stream.url = it.url
+            }
         }
-    }
+    }.orEmpty()
 }
 
 

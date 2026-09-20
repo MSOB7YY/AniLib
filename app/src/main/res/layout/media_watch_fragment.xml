@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.pranavpandey.android.dynamic.support.widget.DynamicFrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <HorizontalScrollView
+            android:id="@+id/watch_filter_scroll_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:clipToPadding="false"
+            android:paddingStart="8dp"
+            android:paddingEnd="8dp"
+            android:paddingBottom="4dp"
+            android:scrollbars="none">
+
+            <com.google.android.material.chip.ChipGroup
+                android:id="@+id/watch_filter_chip_group"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:chipSpacingHorizontal="6dp"
+                app:singleLine="true" />
+
+        </HorizontalScrollView>
+
+        <com.pranavpandey.android.dynamic.support.widget.DynamicSwipeRefreshLayout
+            android:id="@+id/watch_swipe_to_refresh"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:adt_colorType="accent_dark">
+
+            <com.pranavpandey.android.dynamic.support.widget.DynamicRecyclerView
+                android:id="@+id/watch_recycler_view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:clipToPadding="false"
+                android:paddingBottom="52dp"
+                android:scrollbars="none"
+                app:adt_windowInsets="false" />
+
+        </com.pranavpandey.android.dynamic.support.widget.DynamicSwipeRefreshLayout>
+
+    </LinearLayout>
+
+    <com.pranavpandey.android.dynamic.support.widget.DynamicFloatingActionButton
+        android:id="@+id/watch_scroll_fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_marginEnd="12dp"
+        android:layout_marginBottom="12dp"
+        android:src="@drawable/ic_arrow_down"
+        app:adt_colorType="accent"
+        app:fabSize="mini" />
+
+</com.pranavpandey.android.dynamic.support.widget.DynamicFrameLayout>

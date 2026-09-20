@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.revolgenx.anilib.ui.view.widgets.AlCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    style="@style/Widget.DynamicApp.Card.Clickable"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="6dp">
+
+    <com.pranavpandey.android.dynamic.support.widget.DynamicLinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <View
+            android:id="@+id/watch_torrent_marker_view"
+            android:layout_width="4dp"
+            android:layout_height="match_parent" />
+
+        <com.pranavpandey.android.dynamic.support.widget.DynamicLinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp">
+
+            <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
+                android:id="@+id/watch_torrent_title_tv"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:maxLines="2"
+                android:textSize="13sp"
+                tools:text="[Group] Anime - 01 [1080p]" />
+
+            <com.pranavpandey.android.dynamic.support.widget.DynamicLinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="6dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <com.pranavpandey.android.dynamic.support.widget.DynamicImageView
+                    android:layout_width="13dp"
+                    android:layout_height="13dp"
+                    android:src="@drawable/ic_storage"
+                    app:adt_colorType="text_secondary" />
+
+                <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
+                    android:id="@+id/watch_torrent_size_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="4dp"
+                    android:maxLines="1"
+                    android:textSize="11sp"
+                    app:adt_colorType="text_secondary"
+                    tools:ignore="SmallSp"
+                    tools:text="1.4 GB" />
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:layout_width="15dp"
+                    android:layout_height="15dp"
+                    android:layout_marginStart="10dp"
+                    android:src="@drawable/ic_baseline_keyboard_arrow_up"
+                    app:tint="@color/watch_seeder_color"
+                    tools:ignore="ContentDescription" />
+
+                <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
+                    android:id="@+id/watch_torrent_seeder_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:maxLines="1"
+                    android:textSize="11sp"
+                    tools:ignore="SmallSp"
+                    tools:text="25" />
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:layout_width="15dp"
+                    android:layout_height="15dp"
+                    android:layout_marginStart="8dp"
+                    android:src="@drawable/ic_arrow_down"
+                    app:tint="@color/watch_leecher_color"
+                    tools:ignore="ContentDescription" />
+
+                <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
+                    android:id="@+id/watch_torrent_leecher_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:maxLines="1"
+                    android:textSize="11sp"
+                    tools:ignore="SmallSp"
+                    tools:text="3" />
+
+                <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
+                    android:id="@+id/watch_torrent_group_tv"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginEnd="6dp"
+                    android:layout_weight="1"
+                    android:ellipsize="end"
+                    android:gravity="end"
+                    android:maxLines="1"
+                    android:textSize="11sp"
+                    app:adt_colorType="accent"
+                    tools:ignore="SmallSp"
+                    tools:text="SubsPlease" />
+
+            </com.pranavpandey.android.dynamic.support.widget.DynamicLinearLayout>
+
+            <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
+                android:id="@+id/watch_torrent_meta_tv"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:layout_marginEnd="6dp"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:textSize="11sp"
+                app:adt_colorType="text_secondary"
+                tools:ignore="SmallSp"
+                tools:text="WEB-DL · H.264 · audio ja · subs en · 2 days ago" />
+
+        </com.pranavpandey.android.dynamic.support.widget.DynamicLinearLayout>
+
+        <com.pranavpandey.android.dynamic.support.widget.DynamicImageView
+            android:id="@+id/watch_torrent_magnet_iv"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:layout_gravity="center_vertical"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:padding="8dp"
+            android:src="@drawable/ic_link"
+            app:adt_colorType="accent" />
+
+        <com.pranavpandey.android.dynamic.support.widget.DynamicImageView
+            android:id="@+id/watch_torrent_download_iv"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:layout_gravity="center_vertical"
+            android:layout_marginStart="2dp"
+            android:layout_marginEnd="6dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:padding="8dp"
+            android:src="@drawable/ic_download"
+            app:adt_colorType="accent" />
+
+    </com.pranavpandey.android.dynamic.support.widget.DynamicLinearLayout>
+
+</com.revolgenx.anilib.ui.view.widgets.AlCardView>

@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.pranavpandey.android.dynamic.support.widget.DynamicFrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <com.revolgenx.anilib.ui.view.widgets.AlCardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp">
+
+            <com.revolgenx.anilib.ui.view.widgets.AniLibItemView
+                android:id="@+id/watch_preferred_groups_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:ads_fillSpace="true"
+                app:ads_icon="@drawable/ic_star"
+                app:ads_title="@string/watch_preferred_groups"
+                app:adt_colorType="text_primary" />
+
+        </com.revolgenx.anilib.ui.view.widgets.AlCardView>
+
+        <com.revolgenx.anilib.ui.view.widgets.AlCardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="6dp"
+            android:layout_marginEnd="8dp">
+
+            <com.revolgenx.anilib.ui.view.widgets.AniLibItemView
+                android:id="@+id/watch_result_languages_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:ads_fillSpace="true"
+                app:ads_icon="@drawable/ads_ic_translate"
+                app:ads_title="@string/watch_result_languages"
+                app:adt_colorType="text_primary" />
+
+        </com.revolgenx.anilib.ui.view.widgets.AlCardView>
+
+        <com.pranavpandey.android.dynamic.support.widget.DynamicRecyclerView
+            android:id="@+id/watch_action_recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:clipToPadding="false"
+            android:paddingStart="8dp"
+            android:paddingTop="8dp"
+            android:paddingEnd="8dp"
+            android:paddingBottom="24dp"
+            android:scrollbars="none"
+            app:adt_windowInsets="false" />
+
+    </LinearLayout>
+
+    <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
+        android:id="@+id/watch_action_empty_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="@string/watch_no_actions"
+        android:textSize="14sp"
+        android:visibility="gone"
+        app:adt_colorType="text_secondary" />
+
+</com.pranavpandey.android.dynamic.support.widget.DynamicFrameLayout>

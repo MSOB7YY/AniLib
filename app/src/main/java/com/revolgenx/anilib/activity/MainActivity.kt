@@ -721,6 +721,18 @@ class MainActivity : BaseDynamicActivity<ActivityMainBinding>(), CoroutineScope,
                     SettingEventTypes.LANGUAGE_CHOOSER -> {
                         addFragmentToMain(MlLanguageChooserFragment())
                     }
+
+                    SettingEventTypes.WATCH_ACTION -> {
+                        addFragmentToMain(WatchActionSettingFragment())
+                    }
+
+                    SettingEventTypes.WATCH_ACTION_EDIT -> {
+                        addFragmentToMain(
+                            WatchActionEditFragment.newInstance(
+                                (event.data as? WatchActionEventMeta)?.actionId
+                            )
+                        )
+                    }
                 }
             }
         }

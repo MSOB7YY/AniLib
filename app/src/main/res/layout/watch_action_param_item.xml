@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.pranavpandey.android.dynamic.support.widget.DynamicLinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center_vertical"
+    android:orientation="horizontal">
+
+    <com.pranavpandey.android.dynamic.support.widget.DynamicEditText
+        android:id="@+id/watch_param_key_et"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.4"
+        android:hint="@string/watch_action_key"
+        android:inputType="text"
+        android:maxLines="1"
+        android:textSize="13sp"
+        tools:ignore="Autofill" />
+
+    <com.pranavpandey.android.dynamic.support.widget.DynamicEditText
+        android:id="@+id/watch_param_value_et"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="6dp"
+        android:layout_weight="0.6"
+        android:hint="@string/watch_action_value"
+        android:inputType="text"
+        android:maxLines="1"
+        android:textSize="13sp"
+        tools:ignore="Autofill" />
+
+    <com.pranavpandey.android.dynamic.support.widget.DynamicImageView
+        android:id="@+id/watch_param_delete_iv"
+        android:layout_width="28dp"
+        android:layout_height="28dp"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:padding="4dp"
+        android:src="@drawable/ic_delete" />
+
+</com.pranavpandey.android.dynamic.support.widget.DynamicLinearLayout>
