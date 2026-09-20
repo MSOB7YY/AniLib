@@ -73,6 +73,7 @@ import com.revolgenx.anilib.airing.fragment.AiringFragment
 import com.revolgenx.anilib.character.fragment.CharacterContainerFragment
 import com.revolgenx.anilib.friend.fragment.UserFriendContainerFragment
 import com.revolgenx.anilib.home.list.fragment.MediaListCollectionContainerFragment
+import com.revolgenx.anilib.media.fragment.MediaChronologyFragment
 import com.revolgenx.anilib.media.fragment.MediaInfoContainerFragment
 import com.revolgenx.anilib.user.fragment.MediaListingFragment
 import com.revolgenx.anilib.notification.fragment.NotificationFragment
@@ -601,6 +602,10 @@ class MainActivity : BaseDynamicActivity<ActivityMainBinding>(), CoroutineScope,
 
             is OpenMediaListEditorEvent -> {
                 openMediaListEditorCenter(event.mediaId)
+            }
+
+            is OpenMediaChronologyEvent -> {
+                addFragmentToMain(MediaChronologyFragment.newInstance(event.meta))
             }
 
             is OpenMediaInfoEvent -> {

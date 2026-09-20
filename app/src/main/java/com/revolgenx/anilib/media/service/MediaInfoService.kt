@@ -49,6 +49,13 @@ abstract class MediaInfoService(protected val graphRepository: BaseGraphReposito
         callback: (Resource<MediaStatsModel>) -> Unit
     )
 
+    abstract fun getMediaFranchise(
+        field: MediaFranchiseField,
+        resumeFrom: FranchiseGraph? = null,
+        compositeDisposable: CompositeDisposable? = null,
+        resourceCallback: (Resource<FranchiseGraph>) -> Unit
+    )
+
     abstract fun getMediaSocialFollowing(
         field: MediaSocialFollowingField,
         compositeDisposable: CompositeDisposable,

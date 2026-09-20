@@ -110,7 +110,7 @@ fun MediaContent.toModel() = MediaModel().also { m ->
 
     m.startDate = startDate?.onFuzzyDate?.fuzzyDate?.toModel()
     m.endDate = endDate?.onFuzzyDate?.fuzzyDate?.toModel()
-    m.bannerImage = bannerImage ?: m.coverImage!!.largeImage
+    m.bannerImage = bannerImage ?: m.coverImage?.largeImage
 
     m.isAdult = isAdult ?: false
     m.mediaListEntry = mediaListEntry?.let { list ->

@@ -230,6 +230,23 @@ query MediaOverViewQuery($mediaId:Int){
     }
 }
 
+query MediaFranchiseQuery($idIn:[Int], $perPage:Int){
+    page: Page(page:1, perPage:$perPage){
+        media(id_in:$idIn){
+            ... mediaContent
+            relations{
+                edges{
+                    relationType(version:2)
+                    node{
+                        id
+                        type
+                    }
+                }
+            }
+        }
+    }
+}
+
 query MediaSocialFollowingQuery(
     $page:Int,
     $perPage:Int,

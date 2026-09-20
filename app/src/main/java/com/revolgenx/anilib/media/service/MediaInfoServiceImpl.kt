@@ -7,6 +7,7 @@ import com.revolgenx.anilib.common.data.model.stats.StatusDistributionModel
 import com.revolgenx.anilib.common.repository.network.BaseGraphRepository
 import com.revolgenx.anilib.common.repository.network.converter.toModel
 import com.revolgenx.anilib.common.repository.util.Resource
+import com.revolgenx.anilib.media.data.crawler.FranchiseCrawler
 import com.revolgenx.anilib.media.data.field.*
 import com.revolgenx.anilib.media.data.model.*
 import com.revolgenx.anilib.staff.data.model.*
@@ -289,6 +290,29 @@ class MediaInfoServiceImpl(graphRepository: BaseGraphRepository) :
         compositeDisposable?.add(disposable)
     }
 
+
+    override fun getMediaFranchise(
+        field: MediaFranchiseField,
+        resumeFrom: FranchiseGraph?,
+        compositeDisposable: CompositeDisposable?,
+        callback: (Resource<FranchiseGraph>) -> Unit
+    ) {
+        val crawler = FranchiseCrawler(field.limits, field.rootMediaType) { ids ->
+            graphRepository.request(field.batchFor(ids).toQueryOrMutation())
+                .map { it.data?.toFranchiseNodes().orEmpty() }
+        }
+
+        val disposable = (resumeFrom?.let { crawler.resume(it) } ?: crawler.crawl(field.rootMediaId))
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe({
+                callback.invoke(Resource.success(it))
+            }, {
+                Timber.e(it)
+                callback.invoke(Resource.error(it.message, null, it))
+            })
+
+        compositeDisposable?.add(disposable)
+    }
 
     override fun getMediaSocialFollowing(
         field: MediaSocialFollowingField,

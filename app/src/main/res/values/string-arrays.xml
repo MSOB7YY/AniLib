@@ -424,6 +424,11 @@
         <item>@string/unknown</item>
     </string-array>
 
+    <string-array name="media_chronology_order">
+        <item>@string/release_order</item>
+        <item>@string/story_order</item>
+    </string-array>
+
     <string-array name="media_relation">
         <item>@string/adaptation</item>
         <item>@string/prequel</item>

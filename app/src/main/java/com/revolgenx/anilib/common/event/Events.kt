@@ -11,6 +11,7 @@ data class OpenUserFriendEvent(val userId: Int? = null, val isFollower: Boolean 
     BaseEvent()
 
 data class OpenMediaInfoEvent(val meta: MediaInfoMeta) : BaseEvent()
+data class OpenMediaChronologyEvent(val meta: MediaInfoMeta) : BaseEvent()
 data class OpenMediaListEditorEvent(val mediaId:Int) : BaseEvent()
 data class OpenSettingEvent(val settingEventType: SettingEventTypes, val data:SettingEventData?= null) : BaseEvent()
 enum class SettingEventTypes {

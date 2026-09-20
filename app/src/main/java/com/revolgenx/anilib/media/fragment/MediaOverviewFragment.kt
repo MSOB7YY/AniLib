@@ -36,6 +36,7 @@ import com.revolgenx.anilib.media.data.field.MediaOverviewField
 import com.revolgenx.anilib.common.ui.fragment.BaseLayoutFragment
 import com.revolgenx.anilib.media.data.meta.MediaInfoMeta
 import com.revolgenx.anilib.databinding.MediaOverviewFragmentBinding
+import com.revolgenx.anilib.common.event.OpenMediaChronologyEvent
 import com.revolgenx.anilib.common.event.OpenStudioEvent
 import com.revolgenx.anilib.common.repository.util.Resource
 import com.revolgenx.anilib.media.presenter.MediaInfoRelationshipPresenter
@@ -153,6 +154,10 @@ class MediaOverviewFragment : BaseLayoutFragment<MediaOverviewFragmentBinding>()
             LinearLayoutManager(context, RecyclerView.HORIZONTAL, false)
         binding.relationRecyclerView.layoutManager =
             LinearLayoutManager(context, RecyclerView.HORIZONTAL, false)
+
+        binding.relationshipChronologyCard.setOnClickListener {
+            mediaBrowserMeta?.let { OpenMediaChronologyEvent(it).postEvent }
+        }
 
         mediaBrowserMeta ?: return
 
@@ -317,7 +322,7 @@ class MediaOverviewFragment : BaseLayoutFragment<MediaOverviewFragmentBinding>()
 
         if (overview.relations?.edges.isNullOrEmpty()) {
             relationRecyclerView.visibility = View.GONE
-            relationshipHeaderTv.visibility = View.GONE
+            relationshipHeaderContainer.visibility = View.GONE
         } else {
             invalidateRelationshipAdapter(overview.relations!!.edges!!)
         }

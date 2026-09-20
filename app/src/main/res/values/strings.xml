@@ -735,4 +735,20 @@
     <string name="block_user_msg">AniLib is going to open user in browser. It is a 3rd party app and due to it\'s limitation, blocking/unblocking users is only possible through anilist.co. User must be logged in to see dropdown button in profile which is in top-left(for small screen) or in right.</string>
     <string name="support">Support</string>
     <string name="grant_notification_permission_message">Please grant notification permission from app settings</string>
+    <string name="chronology">Chronology</string>
+    <string name="story_order">Story</string>
+    <string name="release_order">Release</string>
+    <string name="entries">Entries</string>
+    <string name="total_runtime">Runtime</string>
+    <string name="load_more">Load more</string>
+    <string name="side_stories">Side stories</string>
+    <string name="specials">Specials</string>
+    <string name="on_my_list">On my list</string>
+    <string name="hours_minutes_format" translatable="false">%1$dh %2$dm</string>
+    <string name="minutes_format" translatable="false">%1$dm</string>
+    <string name="episode_count_duration">%1$d ep × %2$d min</string>
+    <string name="chapter_volume_count">%1$s ch · %2$s vol</string>
+    <string name="franchise_truncated">Large franchise, showing the first %1$d entries</string>
+    <string name="franchise_more_available">More entries available</string>
+    <string name="franchise_partial">Some entries could not be loaded</string>
 </resources>
