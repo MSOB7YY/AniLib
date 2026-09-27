@@ -22,6 +22,7 @@ private const val loggedInKey = "logged_in_key"
 private const val tokenKey = "token_key"
 private const val titleKey = "title_key"
 private const val imageQualityKey = "image_quality_key"
+private const val malCoversKey = "mal_covers_key"
 private const val hideGlobalRatingKey = "hide_global_rating_key"
 private const val userIdKey = "user_id_key"
 private const val canShowAdultKey = "can_show_adult_key"
@@ -55,6 +56,8 @@ fun titlePref(pref: String) = save(titleKey, pref)
 // and visibly upscales in a grid cell). Keep this in sync with ads_value on the spinner in
 // application_setting_fragment_layout.xml.
 fun imageQuality() = load(imageQualityKey, "2")
+
+fun malCoversEnabled() = load(malCoversKey, false)
 
 /**
  * When on, scores that come from everyone else (AniList's average score) start hidden behind an

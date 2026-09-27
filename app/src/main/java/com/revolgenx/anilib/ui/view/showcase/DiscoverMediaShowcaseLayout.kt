@@ -120,7 +120,7 @@ class DiscoverMediaShowcaseLayout : LinearLayout {
                         media.type!!,
                         media.title!!.romaji!!,
                         media.coverImage!!.image(),
-                        media.coverImage!!.largeImage,
+                        media.coverImage!!.largeImage(),
                         media.bannerImage
                     )
                 ).postEvent

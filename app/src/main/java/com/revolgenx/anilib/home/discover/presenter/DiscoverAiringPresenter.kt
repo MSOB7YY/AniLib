@@ -19,6 +19,7 @@ import com.revolgenx.anilib.common.presenter.BasePresenter
 import com.revolgenx.anilib.search.data.model.SearchFilterEventModel
 import com.revolgenx.anilib.ui.view.makeToast
 import com.revolgenx.anilib.util.naText
+import com.revolgenx.anilib.ui.view.setCover
 
 class DiscoverAiringPresenter(context: Context) : BasePresenter<DiscoverAiringPresenterLayoutBinding, AiringScheduleModel>(context) {
     override val elementTypes: Collection<Int>
@@ -54,7 +55,7 @@ class DiscoverAiringPresenter(context: Context) : BasePresenter<DiscoverAiringPr
         val media = item.media ?: return
 
         binding.apply {
-            airingMediaSimpleDrawee.setImageURI(media.coverImage?.image())
+            airingMediaSimpleDrawee.setCover(media.coverImage)
             mediaRatingTv.text = media.averageScore
             airingMediaTitleTv.text = media.title?.title()
             airingFormatTv.text = context.getString(R.string.format_episode_s).format(
@@ -76,7 +77,7 @@ class DiscoverAiringPresenter(context: Context) : BasePresenter<DiscoverAiringPr
                         media.type!!,
                         media.title!!.romaji!!,
                         media.coverImage!!.image(),
-                        media.coverImage!!.largeImage,
+                        media.coverImage!!.largeImage(),
                         media.bannerImage
                     )
                 ).postEvent

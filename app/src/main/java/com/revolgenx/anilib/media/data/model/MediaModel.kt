@@ -93,6 +93,7 @@ fun isAnime(item: MediaModel?): Boolean {
 
 fun MediaContent.toModel() = MediaModel().also { m ->
     m.id = id
+    m.idMal = idMal ?: -1
     m.title = title?.onMediaTitle?.mediaTitle?.toModel()
     m.popularity = popularity
     m.favourites = favourites
@@ -103,7 +104,7 @@ fun MediaContent.toModel() = MediaModel().also { m ->
     m.chapters = chapters
     m.volumes = volumes
     m.status = status?.ordinal
-    m.coverImage = coverImage?.onMediaCoverImage?.mediaCoverImage?.toModel()
+    m.coverImage = coverImage?.onMediaCoverImage?.mediaCoverImage?.toModel(idMal, type)
     m.genres = genres?.filterNotNull()
     m.averageScore = averageScore
     m.season = season?.ordinal
@@ -111,7 +112,7 @@ fun MediaContent.toModel() = MediaModel().also { m ->
 
     m.startDate = startDate?.onFuzzyDate?.fuzzyDate?.toModel()
     m.endDate = endDate?.onFuzzyDate?.fuzzyDate?.toModel()
-    m.bannerImage = bannerImage ?: m.coverImage?.largeImage
+    m.bannerImage = bannerImage ?: m.coverImage?.largeImage()
 
     m.isAdult = isAdult ?: false
     m.mediaListEntry = mediaListEntry?.let { list ->

@@ -19,6 +19,7 @@ import com.revolgenx.anilib.search.data.model.SearchFilterEventModel
 import com.revolgenx.anilib.type.MediaType
 import com.revolgenx.anilib.util.loginContinue
 import com.revolgenx.anilib.util.naText
+import com.revolgenx.anilib.ui.view.setCover
 
 object AiringPresenterBindingHelper {
     fun AiringPresenterLayoutBinding.bindPresenter(
@@ -28,7 +29,7 @@ object AiringPresenterBindingHelper {
     ) {
         val media = item.media ?: return
         mediaTitleTv.naText(media.title!!.title())
-        coverImageIv.setImageURI(media.coverImage!!.image())
+        coverImageIv.setCover(media.coverImage)
 
         if (media.type == MediaType.ANIME.ordinal) {
             mediaEpisodeTv.text =
@@ -69,7 +70,7 @@ object AiringPresenterBindingHelper {
                     media.type!!,
                     media.title!!.romaji!!,
                     media.coverImage!!.image(),
-                    media.coverImage!!.largeImage,
+                    media.coverImage!!.largeImage(),
                     media.bannerImage
                 )
             ).postEvent
@@ -114,7 +115,7 @@ object AiringPresenterBindingHelper {
     ) { //formats status statuscolor
         val media = item.media ?: return
         mediaTitleTv.naText(media.title!!.title())
-        coverImageIv.setImageURI(media.coverImage!!.image())
+        coverImageIv.setCover(media.coverImage)
 
         if (media.isAnime) {
             mediaEpisodeTv.text =
@@ -142,7 +143,7 @@ object AiringPresenterBindingHelper {
                     media.type!!,
                     media.title!!.romaji!!,
                     media.coverImage!!.image(),
-                    media.coverImage!!.largeImage,
+                    media.coverImage!!.largeImage(),
                     media.bannerImage
                 )
             ).postEvent
@@ -209,7 +210,7 @@ object AiringPresenterBindingHelper {
                     media.type!!,
                     media.title!!.romaji!!,
                     media.coverImage!!.image(),
-                    media.coverImage!!.largeImage,
+                    media.coverImage!!.largeImage(),
                     media.bannerImage
                 )
             ).postEvent

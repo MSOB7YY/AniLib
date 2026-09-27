@@ -37,6 +37,7 @@ import com.revolgenx.anilib.util.*
 import org.greenrobot.eventbus.Subscribe
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import com.revolgenx.anilib.ui.view.setCover
 
 class ActivityInfoFragment : BaseLayoutFragment<ActivityInfoFragmentLayoutBinding>(),
     EventBusListener {
@@ -359,7 +360,7 @@ class ActivityInfoFragment : BaseLayoutFragment<ActivityInfoFragmentLayoutBindin
         listUserNameTv.text = item.user?.name
         listActivityCreatedAtTv.text = item.createdAt
         item.media?.let { media ->
-            mediaCoverIv.setImageURI(media.coverImage?.image())
+            mediaCoverIv.setCover(media.coverImage)
             mediaCoverIv.setOnClickListener {
                 OpenMediaInfoEvent(
                     MediaInfoMeta(
@@ -367,7 +368,7 @@ class ActivityInfoFragment : BaseLayoutFragment<ActivityInfoFragmentLayoutBindin
                         media.type!!,
                         media.title!!.userPreferred,
                         media.coverImage!!.image(),
-                        media.coverImage!!.largeImage,
+                        media.coverImage!!.largeImage(),
                         media.bannerImage
                     )
                 ).postEvent

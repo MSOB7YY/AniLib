@@ -16,6 +16,7 @@ import com.revolgenx.anilib.media.data.model.MediaModel
 import com.revolgenx.anilib.ui.view.makeToast
 import com.revolgenx.anilib.util.loginContinue
 import com.revolgenx.anilib.util.naText
+import com.revolgenx.anilib.ui.view.setCover
 
 class MediaListingPresenter(context: Context) : BasePresenter<MediaListingPresenterLayoutBinding, MediaModel>(context) {
 
@@ -45,7 +46,7 @@ class MediaListingPresenter(context: Context) : BasePresenter<MediaListingPresen
         val item = element.data ?: return
 
         holder.getBinding()?.apply {
-            mediaCoverIv.setImageURI(item.coverImage?.image())
+            mediaCoverIv.setCover(item.coverImage)
             mediaTitleTv.text = item.title?.title()
             mediaFormatTv.text =
                 context.getString(R.string.media_format_year_s).format(item.format?.let {
@@ -65,7 +66,7 @@ class MediaListingPresenter(context: Context) : BasePresenter<MediaListingPresen
                         item.type!!,
                         item.title!!.romaji!!,
                         item.coverImage!!.image(),
-                        item.coverImage!!.largeImage,
+                        item.coverImage!!.largeImage(),
                         item.bannerImage
                     )
                 ).postEvent

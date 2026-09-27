@@ -28,8 +28,8 @@ class MediaOverviewField :
 fun MediaOverViewQuery.Media.toModel() = MediaModel().also {
     it.id = id
     it.title = title?.mediaTitle?.toModel()
-    it.coverImage = coverImage?.mediaCoverImage?.toModel()
-    it.bannerImage = bannerImage ?: it.coverImage?.largeImage
+    it.coverImage = coverImage?.mediaCoverImage?.toModel(idMal, type)
+    it.bannerImage = bannerImage ?: it.coverImage?.largeImage()
     it.siteUrl = siteUrl
     it.startDate = startDate?.fuzzyDate?.toModel()
     it.endDate = endDate?.fuzzyDate?.toModel()
@@ -90,8 +90,8 @@ fun MediaOverViewQuery.Media.toModel() = MediaModel().also {
                             rel.averageScore = node.averageScore
                             rel.seasonYear = node.seasonYear
                             rel.coverImage =
-                                node.coverImage?.mediaCoverImage?.toModel()
-                            rel.bannerImage = node.bannerImage ?: rel.coverImage?.largeImage
+                                node.coverImage?.mediaCoverImage?.toModel(node.idMal, node.type)
+                            rel.bannerImage = node.bannerImage ?: rel.coverImage?.largeImage()
                         }
                     }
                 }

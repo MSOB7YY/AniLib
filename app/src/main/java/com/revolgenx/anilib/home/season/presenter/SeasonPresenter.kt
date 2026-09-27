@@ -21,6 +21,7 @@ import com.revolgenx.anilib.media.data.model.MediaModel
 import com.revolgenx.anilib.search.data.model.SearchFilterEventModel
 import com.revolgenx.anilib.util.loginContinue
 import com.revolgenx.anilib.util.naText
+import com.revolgenx.anilib.ui.view.setCover
 
 class SeasonPresenter(context: Context) :
     BasePresenter<SeasonPresenterLayoutBinding, MediaModel>(context) {
@@ -58,7 +59,7 @@ class SeasonPresenter(context: Context) :
         val binding = holder.getBinding() ?: return
         binding.apply {
             mediaTitleTv.naText(item.title!!.title())
-            coverImageIv.setImageURI(item.coverImage!!.image())
+            coverImageIv.setCover(item.coverImage)
             if (item.type == MediaType.ANIME.ordinal) {
                 mediaEpisodeTv.text =
                     context.getString(R.string.ep_d_s).format(item.episodes.naText(), item.duration.naText())
@@ -94,7 +95,7 @@ class SeasonPresenter(context: Context) :
                         item.type!!,
                         item.title!!.romaji!!,
                         item.coverImage!!.image(),
-                        item.coverImage!!.largeImage,
+                        item.coverImage!!.largeImage(),
                         item.bannerImage
                     )
                 ).postEvent

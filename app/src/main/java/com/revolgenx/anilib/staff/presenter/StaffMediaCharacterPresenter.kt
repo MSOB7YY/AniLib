@@ -27,6 +27,7 @@ import com.revolgenx.anilib.ui.view.makeToast
 import com.revolgenx.anilib.ui.view.score.MediaScoreBadge
 import com.revolgenx.anilib.util.loginContinue
 import com.revolgenx.anilib.util.naText
+import com.revolgenx.anilib.ui.view.setCover
 
 //voice roles
 class StaffMediaCharacterPresenter(context: Context) :
@@ -114,7 +115,7 @@ class StaffMediaCharacterPresenter(context: Context) :
         }
 
 
-        staffMediaImageView?.setImageURI(item.coverImage?.image())
+        staffMediaImageView?.setCover(item.coverImage)
         staffMediaTitleTv?.text = item.title?.title()
         staffMediaRatingTv?.text = item.averageScore
         staffMediaStatusTv?.text = item.status?.let {
@@ -134,7 +135,7 @@ class StaffMediaCharacterPresenter(context: Context) :
                     item.type!!,
                     item.title!!.romaji!!,
                     item.coverImage!!.image(),
-                    item.coverImage!!.largeImage,
+                    item.coverImage!!.largeImage(),
                     item.bannerImage
                 )
             ).postEvent

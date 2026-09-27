@@ -39,6 +39,7 @@ import com.revolgenx.anilib.ui.view.makeToast
 import com.revolgenx.anilib.util.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import kotlin.math.abs
+import com.revolgenx.anilib.ui.view.setCover
 
 class MediaInfoContainerFragment : BaseLayoutFragment<MediaInfoContainerFragmentLayoutBinding>(),
     EventBusListener {
@@ -332,7 +333,7 @@ class MediaInfoContainerFragment : BaseLayoutFragment<MediaInfoContainerFragment
         val toolbarTitle = media.title?.romaji ?: media.title?.title().naText()
 
         legacyMediaTitleTv.text = toolbarTitle
-        legacyMediaBrowserCoverImage.setImageURI(media.coverImage?.image())
+        legacyMediaBrowserCoverImage.setCover(media.coverImage)
         legacyMediaBrowserBannerImage.setImageURI(media.bannerImage)
 
         media.mediaListEntry?.status?.let {
@@ -345,7 +346,7 @@ class MediaInfoContainerFragment : BaseLayoutFragment<MediaInfoContainerFragment
         val toolbarTitle = media.title?.romaji ?: media.title?.title().naText()
 
         mediaTitleTv.text = toolbarTitle
-        mediaBrowserCoverImage.setImageURI(media.coverImage?.image())
+        mediaBrowserCoverImage.setCover(media.coverImage)
         mediaBrowserBannerImage.setImageURI(media.bannerImage)
 
         mediaPopularityTv.text =
@@ -442,7 +443,7 @@ class MediaInfoContainerFragment : BaseLayoutFragment<MediaInfoContainerFragment
 
             legacyMediaBrowserCoverImage.setOnClickListener {
                 val media = mediaModel ?: return@setOnClickListener
-                OpenImageEvent(media.coverImage?.largeImage).postEvent
+                OpenImageEvent(media.coverImage?.largeImage()).postEvent
             }
 
             legacyMediaTitleTv.setOnClickListener {
@@ -488,7 +489,7 @@ class MediaInfoContainerFragment : BaseLayoutFragment<MediaInfoContainerFragment
 
             mediaBrowserCoverImage.setOnClickListener {
                 val media = mediaModel ?: return@setOnClickListener
-                OpenImageEvent(media.coverImage?.largeImage).postEvent
+                OpenImageEvent(media.coverImage?.largeImage()).postEvent
             }
 
             mediaTitleTv.setOnClickListener {

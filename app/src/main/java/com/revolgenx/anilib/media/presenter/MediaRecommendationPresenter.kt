@@ -26,6 +26,7 @@ import com.revolgenx.anilib.util.naText
 import com.revolgenx.anilib.media.viewmodel.MediaOverviewVM
 import com.revolgenx.anilib.ui.view.makeErrorToast
 import com.revolgenx.anilib.util.loginContinue
+import com.revolgenx.anilib.ui.view.setCover
 
 class MediaRecommendationPresenter(
     private val lifecycleOwner: LifecycleOwner,
@@ -120,7 +121,7 @@ class MediaRecommendationPresenter(
     private fun OverviewRecommendationPresnterLayoutBinding.updateView(data: RecommendationModel) {
         val item = data.recommended ?: return
         mediaRecommendationTitleTv.text = item.title?.title()
-        recommendationCoverImage.setImageURI(item.coverImage?.image())
+        recommendationCoverImage.setCover(item.coverImage)
 
         mediaRatingTv.text = item.averageScore
 
@@ -158,7 +159,7 @@ class MediaRecommendationPresenter(
                     item.type!!,
                     item.title!!.romaji!!,
                     item.coverImage!!.image(),
-                    item.coverImage!!.largeImage,
+                    item.coverImage!!.largeImage(),
                     item.bannerImage
                 )
             ).postEvent

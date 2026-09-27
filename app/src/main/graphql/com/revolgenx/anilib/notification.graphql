@@ -299,6 +299,7 @@ fragment notificationUserContent on User{
 
 fragment notificationMediaContent on Media{
     id
+    idMal
     title {
         ... mediaTitle
     }

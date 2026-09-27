@@ -44,6 +44,7 @@ query ReviewQuery($reviewId:Int, $mediaId:Int, $userId:Int){
         }
         media{
             id
+            idMal
             title{
                 ... mediaTitle
             }
@@ -74,6 +75,7 @@ query AllReviewQuery($page:Int, $perPage:Int, $sort:[ReviewSort]){
             }
             media{
                 id
+                idMal
                 title{
                     ... mediaTitle
                 }

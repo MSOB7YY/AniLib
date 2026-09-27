@@ -15,6 +15,7 @@ import com.revolgenx.anilib.common.presenter.BasePresenter
 import com.revolgenx.anilib.media.data.model.MediaModel
 import com.revolgenx.anilib.util.loginContinue
 import com.revolgenx.anilib.util.naText
+import com.revolgenx.anilib.ui.view.setCover
 
 class CharacterMediaPresenter(context: Context) : BasePresenter<CharacterMediaPresenterBinding, MediaModel>(context) {
     override val elementTypes: Collection<Int>
@@ -44,7 +45,7 @@ class CharacterMediaPresenter(context: Context) : BasePresenter<CharacterMediaPr
         val item = element.data ?: return
 
         holder.getBinding()?.apply {
-            characterMediaImageView.setImageURI(item.coverImage?.image())
+            characterMediaImageView.setCover(item.coverImage)
             characterMediaTitleTv.text = item.title?.title()
             characterMediaFormatTv.text =
                 context.getString(R.string.media_format_year_s).format(item.format?.let {
@@ -64,7 +65,7 @@ class CharacterMediaPresenter(context: Context) : BasePresenter<CharacterMediaPr
                         item.type!!,
                         item.title!!.romaji!!,
                         item.coverImage!!.image(),
-                        item.coverImage!!.largeImage,
+                        item.coverImage!!.largeImage(),
                         item.bannerImage
                     )
                 ).postEvent

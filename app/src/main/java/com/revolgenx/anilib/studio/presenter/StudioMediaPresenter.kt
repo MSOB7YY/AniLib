@@ -13,6 +13,7 @@ import com.revolgenx.anilib.databinding.StudioMediaPresenterBinding
 import com.revolgenx.anilib.common.event.OpenMediaInfoEvent
 import com.revolgenx.anilib.media.data.model.MediaModel
 import com.revolgenx.anilib.util.naText
+import com.revolgenx.anilib.ui.view.setCover
 
 class StudioMediaPresenter(context: Context) : BasePresenter<StudioMediaPresenterBinding, MediaModel>(context) {
     override val elementTypes: Collection<Int>
@@ -44,7 +45,7 @@ class StudioMediaPresenter(context: Context) : BasePresenter<StudioMediaPresente
         val item = element.data ?: return
 
         holder.getBinding()?.apply {
-            studioMediaImageView.setImageURI(item.coverImage?.image())
+            studioMediaImageView.setCover(item.coverImage)
             studioMediaTitleTv.text = item.title?.title()
             studioMediaRatingTv.text = item.averageScore
             studioMediaFormatYearTv.text = context.getString(R.string.media_format_year_s).format(
@@ -61,7 +62,7 @@ class StudioMediaPresenter(context: Context) : BasePresenter<StudioMediaPresente
                         item.type!!,
                         item.title!!.romaji!!,
                         item.coverImage!!.image(),
-                        item.coverImage!!.largeImage,
+                        item.coverImage!!.largeImage(),
                         item.bannerImage
                     )
                 ).postEvent

@@ -44,7 +44,8 @@ class NotificationServiceImpl(private val graphRepository: BaseGraphRepository) 
                                     MediaModel().also { m ->
                                         m.id = media.id
                                         m.title = media.title?.mediaTitle?.toModel()
-                                        m.coverImage = media.coverImage?.mediaCoverImage?.toModel()
+                                        m.coverImage =
+                                            media.coverImage?.mediaCoverImage?.toModel(media.idMal, media.type)
                                         m.bannerImage = media.bannerImage
                                         m.format = media.format?.ordinal
                                         m.isAdult = media.isAdult == true

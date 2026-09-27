@@ -90,7 +90,7 @@ class ReviewFragment : BaseToolbarFragment<ReviewFragmentLayoutBinding>() {
     private fun ReviewFragmentLayoutBinding.bind() {
         reviewModel?.apply {
             reviewMediaBannerImage.setImageURI(
-                media?.bannerImage ?: media?.coverImage?.largeImage
+                media?.bannerImage ?: media?.coverImage?.largeImage()
             )
             reviewMediaTitleTv.text = media!!.title!!.title()
             reviewMediaTitleTv.setOnClickListener {
@@ -101,7 +101,7 @@ class ReviewFragment : BaseToolbarFragment<ReviewFragmentLayoutBinding>() {
                             item.type!!,
                             item.title!!.romaji!!,
                             item.coverImage!!.image(),
-                            item.coverImage!!.largeImage,
+                            item.coverImage!!.largeImage(),
                             item.bannerImage
                         )
                     ).postEvent

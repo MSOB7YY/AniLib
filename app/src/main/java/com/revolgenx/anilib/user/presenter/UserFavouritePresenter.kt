@@ -22,6 +22,7 @@ import com.revolgenx.anilib.staff.data.model.StaffModel
 import com.revolgenx.anilib.studio.data.model.StudioModel
 import com.revolgenx.anilib.util.loginContinue
 import com.revolgenx.anilib.util.naText
+import com.revolgenx.anilib.ui.view.setCover
 
 //todo://studio rotation
 class UserFavouritePresenter(requireContext: Context, private val lifecycleOwner: LifecycleOwner) :
@@ -93,7 +94,7 @@ class UserFavouritePresenter(requireContext: Context, private val lifecycleOwner
 
 
     private fun SearchMediaLayoutBinding.updateMedia(data: MediaModel) {
-        searchMediaImageView.setImageURI(data.coverImage?.image())
+        searchMediaImageView.setCover(data.coverImage)
         searchMediaTitleTv.text = data.title?.title()
         searchMediaRatingTv.text = data.averageScore
         searchMediaFormatTv.text =
@@ -115,7 +116,7 @@ class UserFavouritePresenter(requireContext: Context, private val lifecycleOwner
                     data.type!!,
                     data.title!!.romaji!!,
                     data.coverImage!!.image(),
-                    data.coverImage!!.largeImage,
+                    data.coverImage!!.largeImage(),
                     data.bannerImage
                 )
             ).postEvent
@@ -186,7 +187,7 @@ class UserFavouritePresenter(requireContext: Context, private val lifecycleOwner
 
             binding.apply {
 
-                searchMediaImageView.setImageURI(item.coverImage?.image())
+                searchMediaImageView.setCover(item.coverImage)
                 searchMediaTitleTv.text = item.title?.title()
                 searchMediaRatingTv.text = item.averageScore
                 searchMediaFormatTv.text =
@@ -208,7 +209,7 @@ class UserFavouritePresenter(requireContext: Context, private val lifecycleOwner
                             item.type!!,
                             item.title!!.romaji!!,
                             item.coverImage!!.image(),
-                            item.coverImage!!.largeImage,
+                            item.coverImage!!.largeImage(),
                             item.bannerImage
                         )
                     ).postEvent

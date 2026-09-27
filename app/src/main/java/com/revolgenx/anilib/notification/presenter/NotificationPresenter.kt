@@ -23,6 +23,7 @@ import com.revolgenx.anilib.common.presenter.BasePresenter
 import com.revolgenx.anilib.notification.data.model.NotificationModel
 import com.revolgenx.anilib.util.openLink
 import java.util.*
+import com.revolgenx.anilib.ui.view.setCover
 
 class NotificationPresenter(context: Context) :
     BasePresenter<NotificationPresenterLayoutBinding, NotificationModel>(context) {
@@ -127,9 +128,7 @@ class NotificationPresenter(context: Context) :
                 }
                 NotificationUnionType.AIRING -> {
                     (item as AiringNotificationModel).let {
-                        notificationMediaDrawee.setImageURI(
-                            it.media?.coverImage?.image()
-                        )
+                        notificationMediaDrawee.setCover(it.media?.coverImage)
                         notificationCreatedTv.text = it.createdAt
                         notificationTitleTv.text = String.format(
                             Locale.getDefault(),
@@ -148,7 +147,7 @@ class NotificationPresenter(context: Context) :
                                     it.media?.type!!,
                                     it.media?.title!!.romaji!!,
                                     it.media?.coverImage!!.image(),
-                                    it.media?.coverImage!!.largeImage,
+                                    it.media?.coverImage!!.largeImage(),
                                     it.media?.bannerImage
                                 )
                             ).postEvent
@@ -170,9 +169,7 @@ class NotificationPresenter(context: Context) :
                 }
                 NotificationUnionType.RELATED_MEDIA_ADDITION -> {
                     (item as RelatedMediaNotificationModel).let {
-                        notificationMediaDrawee.setImageURI(
-                            it.media?.coverImage?.image()
-                        )
+                        notificationMediaDrawee.setCover(it.media?.coverImage)
                         notificationCreatedTv.text = it.createdAt
                         notificationTitleTv.text =
                             context.getString(R.string.s_space_s).format(
@@ -186,7 +183,7 @@ class NotificationPresenter(context: Context) :
                                     it.media?.type,
                                     it.media?.title!!.romaji!!,
                                     it.media?.coverImage!!.image(),
-                                    it.media?.coverImage!!.largeImage,
+                                    it.media?.coverImage!!.largeImage(),
                                     it.media?.bannerImage
                                 )
                             ).postEvent
@@ -203,15 +200,13 @@ class NotificationPresenter(context: Context) :
                                     it.media?.type,
                                     it.media?.title!!.romaji!!,
                                     it.media?.coverImage!!.image(),
-                                    it.media?.coverImage!!.largeImage,
+                                    it.media?.coverImage!!.largeImage(),
                                     it.media?.bannerImage
                                 )
                             ).postEvent
                         }
 
-                        notificationMediaDrawee.setImageURI(
-                            it.media?.coverImage?.image()
-                        )
+                        notificationMediaDrawee.setCover(it.media?.coverImage)
 
                         notificationCreatedTv.text = it.createdAt
                         notificationTitleTv.text =
@@ -233,15 +228,13 @@ class NotificationPresenter(context: Context) :
                                     it.media?.type,
                                     it.media?.title!!.romaji!!,
                                     it.media?.coverImage!!.image(),
-                                    it.media?.coverImage!!.largeImage,
+                                    it.media?.coverImage!!.largeImage(),
                                     it.media?.bannerImage
                                 )
                             ).postEvent
                         }
 
-                        notificationMediaDrawee.setImageURI(
-                            it.media?.coverImage?.image()
-                        )
+                        notificationMediaDrawee.setCover(it.media?.coverImage)
                         notificationCreatedTv.text = it.createdAt
                         notificationTitleTv.text =
                             context.getString(R.string.s_space_s).format(

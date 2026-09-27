@@ -31,6 +31,7 @@ import com.revolgenx.anilib.ui.view.makeConfirmationDialog
 import com.revolgenx.anilib.ui.view.makeToast
 import com.revolgenx.anilib.util.copyToClipBoard
 import com.revolgenx.anilib.util.openLink
+import com.revolgenx.anilib.ui.view.setCover
 
 class ActivityUnionPresenter(
     context: Context,
@@ -324,7 +325,7 @@ class ActivityUnionPresenter(
         updateItems(item)
 
         userAvatarIv.setImageURI(item.user!!.avatar?.large)
-        mediaCoverIv.setImageURI(item.media!!.coverImage?.image())
+        mediaCoverIv.setCover(item.media!!.coverImage)
 
         activityCreatedAtTv.text = item.createdAt
 
@@ -400,7 +401,7 @@ class ActivityUnionPresenter(
                 item.type!!,
                 item.title!!.userPreferred,
                 item.coverImage!!.image(),
-                item.coverImage!!.largeImage,
+                item.coverImage!!.largeImage(),
                 item.bannerImage
             )
         ).postEvent

@@ -34,6 +34,8 @@ import com.revolgenx.anilib.common.repository.networkModules
 import com.revolgenx.anilib.common.repository.repositoryModules
 import com.revolgenx.anilib.notification.service.NotificationWorker
 import com.revolgenx.anilib.infrastructure.service.serviceModule
+import com.revolgenx.anilib.media.data.cover.MalCovers
+import org.koin.android.ext.android.get
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.startKoin
 import timber.log.Timber
@@ -83,6 +85,7 @@ open class App : DynamicApplication() {
             androidContext(this@App)
             modules(getKoinModules())
         }
+        MalCovers.init(this, get())
         setupAds()
         setupAlMarkwon()
     }

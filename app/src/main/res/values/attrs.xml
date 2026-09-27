@@ -20,6 +20,7 @@
     <item name="music_navigation_menu" type="id" />
     <item name="profile_navigation_menu" type="id" />
     <item name="adView" type="id" />
+    <item name="malCoverBinding" type="id" />
 
     <declare-styleable name="TitleTextView">
         <attr name="titleName" format="string" />

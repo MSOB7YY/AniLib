@@ -13,6 +13,7 @@ import com.revolgenx.anilib.common.event.OpenMediaInfoEvent
 import com.revolgenx.anilib.databinding.OverviewRelationshipPresenterLayoutBinding
 import com.revolgenx.anilib.media.data.model.MediaEdgeModel
 import com.revolgenx.anilib.util.naText
+import com.revolgenx.anilib.ui.view.setCover
 
 class MediaInfoRelationshipPresenter(context: Context) :
     BasePresenter<OverviewRelationshipPresenterLayoutBinding, MediaEdgeModel>(context) {
@@ -38,7 +39,7 @@ class MediaInfoRelationshipPresenter(context: Context) :
 
         holder.getBinding()?.apply {
             relationshipTitleTv.text = item.title!!.title()
-            relationshipCoverImage.setImageURI(item.coverImage?.largeImage)
+            relationshipCoverImage.setCover(item.coverImage, large = true)
             relationshipMediaRatingTv.text = item.averageScore
             mediaSourceSeasonYearTv.text =
                 context.getString(R.string.source_seasonyear_s).format(
@@ -59,7 +60,7 @@ class MediaInfoRelationshipPresenter(context: Context) :
                         item.type!!,
                         item.title!!.romaji!!,
                         item.coverImage!!.image(),
-                        item.coverImage!!.largeImage,
+                        item.coverImage!!.largeImage(),
                         item.bannerImage
                     )
                 ).postEvent

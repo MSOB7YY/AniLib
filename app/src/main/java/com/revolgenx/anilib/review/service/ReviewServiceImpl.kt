@@ -54,7 +54,7 @@ class ReviewServiceImpl(private val graphRepository: BaseGraphRepository) : Revi
                         MediaModel().also { media ->
                             media.id = it.id
                             media.title = it.title?.mediaTitle?.toModel()
-                            media.coverImage = it.coverImage?.mediaCoverImage?.toModel()
+                            media.coverImage = it.coverImage?.mediaCoverImage?.toModel(it.idMal, it.type)
                             media.bannerImage = it.bannerImage
                             media.type = it.type?.ordinal
                         }
@@ -109,9 +109,9 @@ class ReviewServiceImpl(private val graphRepository: BaseGraphRepository) : Revi
                                         media.id = it.id
                                         media.title = it.title?.mediaTitle?.toModel()
                                         media.coverImage =
-                                            it.coverImage?.mediaCoverImage?.toModel()
+                                            it.coverImage?.mediaCoverImage?.toModel(it.idMal, it.type)
                                         media.bannerImage =
-                                            it.bannerImage ?: media.coverImage?.largeImage
+                                            it.bannerImage ?: media.coverImage?.largeImage()
                                         media.type = it.type?.ordinal
                                         media.isAdult = it.isAdult ?: false
                                     }

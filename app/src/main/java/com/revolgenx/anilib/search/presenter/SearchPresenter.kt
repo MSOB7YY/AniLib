@@ -27,6 +27,7 @@ import com.revolgenx.anilib.ui.view.makeToast
 import com.revolgenx.anilib.user.data.model.UserModel
 import com.revolgenx.anilib.util.loginContinue
 import com.revolgenx.anilib.util.naText
+import com.revolgenx.anilib.ui.view.setCover
 
 class SearchPresenter(context: Context, private val lifecycleOwner: LifecycleOwner) :
     BasePresenter<ViewBinding, BaseModel>(context) {
@@ -100,7 +101,7 @@ class SearchPresenter(context: Context, private val lifecycleOwner: LifecycleOwn
 
 
     private fun SearchMediaLayoutBinding.updateMedia(item: MediaModel) {
-        searchMediaImageView.setImageURI(item.coverImage?.image())
+        searchMediaImageView.setCover(item.coverImage)
         searchMediaTitleTv.text = item.title?.title()
         searchMediaRatingTv.text = item.averageScore
         searchMediaFormatTv.text =
@@ -122,7 +123,7 @@ class SearchPresenter(context: Context, private val lifecycleOwner: LifecycleOwn
                     item.type!!,
                     item.title!!.romaji!!,
                     item.coverImage!!.image(),
-                    item.coverImage!!.largeImage,
+                    item.coverImage!!.largeImage(),
                     item.bannerImage
                 )
             ).postEvent
@@ -205,7 +206,7 @@ class SearchPresenter(context: Context, private val lifecycleOwner: LifecycleOwn
 
             binding.apply {
 
-                searchMediaImageView.setImageURI(item.coverImage?.image())
+                searchMediaImageView.setCover(item.coverImage)
                 searchMediaTitleTv.text = item.title?.title()
                 searchMediaRatingTv.text = item.averageScore
                 searchMediaFormatTv.text =
@@ -227,7 +228,7 @@ class SearchPresenter(context: Context, private val lifecycleOwner: LifecycleOwn
                             item.type!!,
                             item.title!!.romaji!!,
                             item.coverImage!!.image(),
-                            item.coverImage!!.largeImage,
+                            item.coverImage!!.largeImage(),
                             item.bannerImage
                         )
                     ).postEvent

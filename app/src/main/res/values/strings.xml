@@ -245,6 +245,8 @@
     <string name="notification_interval_desc">Checks if there is any notification after specified time interval.</string>
     <string name="preferred_media_title">Select preferred media title(AniList setting will override this after login)</string>
     <string name="cover_image_quality">Cover Image Quality</string>
+    <string name="mal_covers">MyAnimeList covers</string>
+    <string name="mal_covers_desc">Load cover images from myanimelist.net instead of AniList. A cover is looked up once and remembered. The AniList cover is shown with a faint dot in its corner while the lookup is running, and without one when MyAnimeList has no cover.</string>
     <string name="hide_global_rating">Hide global rating</string>
     <string name="hide_global_rating_desc">Hide the average score behind an eye icon. Tap it to reveal the rating. Scores you gave yourself are always shown.</string>
     <string name="show_rating">Show rating</string>

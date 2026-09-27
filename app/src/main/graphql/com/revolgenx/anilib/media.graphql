@@ -146,6 +146,7 @@ query MediaStatsQuery($mediaId:Int){
 query MediaOverViewQuery($mediaId:Int){
     media: Media(id:$mediaId){
         id
+        idMal
         title {
             ... mediaTitle
         }
@@ -191,6 +192,7 @@ query MediaOverViewQuery($mediaId:Int){
                 relationType(version:2)
                 node{
                     id
+                    idMal
                     title{
                         ... mediaTitle
                     }
@@ -306,6 +308,7 @@ query MediaSocialFollowingQuery(
 
 fragment mediaContent on Media{
     id
+    idMal
     title {
         ... on MediaTitle{
             ... mediaTitle

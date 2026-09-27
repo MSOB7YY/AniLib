@@ -15,6 +15,7 @@ import com.revolgenx.anilib.media.data.model.MediaModel
 import com.revolgenx.anilib.ui.view.makeToast
 import com.revolgenx.anilib.util.loginContinue
 import com.revolgenx.anilib.util.naText
+import com.revolgenx.anilib.ui.view.setCover
 
 //staff roles
 class StaffMediaRolePresenter(context: Context) : BasePresenter<StaffMediaRolePresenterBinding, MediaModel>(context) {
@@ -41,7 +42,7 @@ class StaffMediaRolePresenter(context: Context) : BasePresenter<StaffMediaRolePr
         val binding = holder.getBinding() ?: return
 
         binding.apply {
-            staffMediaRoleImageView.setImageURI(item.coverImage?.image())
+            staffMediaRoleImageView.setCover(item.coverImage)
             staffMediaRoleRatingTv.text = item.averageScore
             staffMediaRoleTitleTv.text = item.title?.title()
             staffMediaRoleTv.text = item.staffRole
@@ -58,7 +59,7 @@ class StaffMediaRolePresenter(context: Context) : BasePresenter<StaffMediaRolePr
                         item.type!!,
                         item.title!!.romaji!!,
                         item.coverImage!!.image(),
-                        item.coverImage!!.largeImage,
+                        item.coverImage!!.largeImage(),
                         item.bannerImage
                     )
                 ).postEvent

@@ -65,15 +65,39 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-
-            <com.revolgenx.anilib.ui.view.preference.AlSpinnerPreference
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:ads_description="@string/preferred_image_quality_desc"
-                app:ads_entries="@array/image_entries"
-                app:ads_key="image_quality_key"
-                app:ads_value="2"
-                app:ads_values="@array/image_values" />
+                android:orientation="vertical"
+                android:paddingBottom="12dp">
+
+                <com.revolgenx.anilib.ui.view.preference.AlSpinnerPreference
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:ads_description="@string/preferred_image_quality_desc"
+                    app:ads_entries="@array/image_entries"
+                    app:ads_key="image_quality_key"
+                    app:ads_value="2"
+                    app:ads_values="@array/image_values" />
+
+                <com.revolgenx.anilib.ui.view.preference.AlCheckPreference
+                    style="@style/AlCheckboxStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="12dp"
+                    android:layout_marginEnd="12dp"
+                    android:text="@string/mal_covers"
+                    app:al_pref_key="mal_covers_key"
+                    app:al_value="false" />
+
+                <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingStart="24dp"
+                    android:paddingEnd="24dp"
+                    android:text="@string/mal_covers_desc"
+                    android:textSize="12sp" />
+            </LinearLayout>
         </com.revolgenx.anilib.ui.view.widgets.AlCardView>
 
 

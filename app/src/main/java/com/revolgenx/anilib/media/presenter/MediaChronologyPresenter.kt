@@ -16,6 +16,7 @@ import com.revolgenx.anilib.media.data.order.FranchiseFormat
 import com.revolgenx.anilib.media.data.order.MediaChronologyModel
 import com.revolgenx.anilib.util.naText
 import java.text.DateFormatSymbols
+import com.revolgenx.anilib.ui.view.setCover
 
 class MediaChronologyPresenter(context: Context) :
     BasePresenter<MediaChronologyPresenterLayoutBinding, MediaChronologyModel>(context) {
@@ -47,7 +48,7 @@ class MediaChronologyPresenter(context: Context) :
         holder.getBinding()?.apply {
             chronologyPositionTv.text = item.position.toString()
             chronologyTitleTv.text = media.title?.title().naText()
-            chronologyCoverIv.setImageURI(media.coverImage?.image())
+            chronologyCoverIv.setCover(media.coverImage)
             chronologyScoreBadge.text = media.averageScore
 
             chronologyRelationTv.text = context.getString(R.string.str_dot_str).format(
@@ -81,7 +82,7 @@ class MediaChronologyPresenter(context: Context) :
                         media.type,
                         media.title?.romaji,
                         media.coverImage?.image(),
-                        media.coverImage?.largeImage,
+                        media.coverImage?.largeImage(),
                         media.bannerImage
                     )
                 ).postEvent

@@ -39,6 +39,7 @@ import com.revolgenx.anilib.ui.view.setProgressUpdating
 import com.revolgenx.anilib.ui.view.score.MediaScoreBadge
 import com.revolgenx.anilib.util.loginContinue
 import com.revolgenx.anilib.util.naText
+import com.revolgenx.anilib.ui.view.setCover
 
 class MediaListCollectionPresenter(
     context: Context,
@@ -188,7 +189,7 @@ class MediaListCollectionPresenter(
             }
 
             titleTv?.text = item.media?.title?.userPreferred
-            coverIv?.setImageURI(item.media?.coverImage?.image())
+            coverIv?.setCover(item.media?.coverImage)
             formatTv?.text = item.media?.format?.let { mediaFormats[it] }.naText()
 
             statusTv?.text = item.media?.status?.let { status ->
@@ -302,7 +303,7 @@ class MediaListCollectionPresenter(
                 item.type!!,
                 item.title!!.userPreferred,
                 item.coverImage!!.image(),
-                item.coverImage!!.largeImage,
+                item.coverImage!!.largeImage(),
                 item.bannerImage
             )
         ).postEvent

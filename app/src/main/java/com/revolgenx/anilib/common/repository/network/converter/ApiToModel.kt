@@ -10,6 +10,7 @@ import com.revolgenx.anilib.common.data.model.FuzzyDateModel
 import com.revolgenx.anilib.user.data.model.UserAvatarModel
 import com.revolgenx.anilib.user.data.model.UserModel
 import com.revolgenx.anilib.fragment.*
+import com.revolgenx.anilib.media.data.cover.MalCovers
 import com.revolgenx.anilib.media.data.model.*
 import com.revolgenx.anilib.social.data.model.ListActivityModel
 import com.revolgenx.anilib.social.data.model.MessageActivityModel
@@ -17,6 +18,7 @@ import com.revolgenx.anilib.social.data.model.TextActivityModel
 import com.revolgenx.anilib.social.data.model.reply.ActivityReplyModel
 import com.revolgenx.anilib.social.factory.AlMarkwonFactory
 import com.revolgenx.anilib.social.markwon.AlStringUtil.anilify
+import com.revolgenx.anilib.type.MediaType
 import com.revolgenx.anilib.util.prettyTime
 
 fun BasicUserQuery.User.toBasicUserModel() = UserModel().also {
@@ -89,7 +91,8 @@ fun UserMediaListOptions.toModel() = MediaListOptionModel().also {
 
 fun MediaTitle.toModel() = MediaTitleModel(english, romaji, native, userPreferred)
 
-fun MediaCoverImage.toModel() = MediaCoverImageModel(medium, large, extraLarge)
+fun MediaCoverImage.toModel(idMal: Int?, type: MediaType?) =
+    MediaCoverImageModel(medium, large, extraLarge, MalCovers.key(idMal, type))
 
 fun FuzzyDate.toModel() = FuzzyDateModel(
     year,
@@ -123,7 +126,7 @@ fun ActivityUnionQuery.OnListActivity.toModel() = ListActivityModel().also { mod
             cModel.id = it.id
             cModel.title = it.title?.mediaTitle?.toModel()
             cModel.type = it.type?.ordinal
-            cModel.coverImage = it.coverImage?.mediaCoverImage?.toModel()
+            cModel.coverImage = it.coverImage?.mediaCoverImage?.toModel(it.idMal, it.type)
             cModel.bannerImage = it.bannerImage
             cModel.isAdult = it.isAdult == true
         }
@@ -194,7 +197,7 @@ fun ActivityInfoQuery.OnListActivity.toModel() = ListActivityModel().also { mode
             cModel.id = it.id
             cModel.title = it.title?.mediaTitle?.toModel()
             cModel.type = it.type?.ordinal
-            cModel.coverImage = it.coverImage?.mediaCoverImage?.toModel()
+            cModel.coverImage = it.coverImage?.mediaCoverImage?.toModel(it.idMal, it.type)
             cModel.bannerImage = it.bannerImage
         }
     }
@@ -322,7 +325,7 @@ fun NotificationMediaContent.toModel() =
     MediaModel().also { m ->
         m.id = id
         m.title = title?.mediaTitle?.toModel()
-        m.coverImage = coverImage?.mediaCoverImage?.toModel()
+        m.coverImage = coverImage?.mediaCoverImage?.toModel(idMal, type)
         m.bannerImage = bannerImage
         m.format = format?.ordinal
         m.isAdult = isAdult == true

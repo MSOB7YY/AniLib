@@ -29,6 +29,7 @@ import com.revolgenx.anilib.ui.view.makeToast
 import com.revolgenx.anilib.ui.view.setProgressUpdating
 import com.revolgenx.anilib.util.loginContinue
 import com.revolgenx.anilib.util.naText
+import com.revolgenx.anilib.ui.view.setCover
 
 class MediaListPresenter(
     context: Context,
@@ -69,7 +70,7 @@ class MediaListPresenter(
 
         binding.apply {
             mediaListTitleTv.text = media.title?.userPreferred
-            mediaListCoverImageView.setImageURI(media.coverImage?.image())
+            mediaListCoverImageView.setCover(media.coverImage)
             mediaListFormatTv.text = media.format?.let {
                 mediaFormats[it]
             }.naText()
@@ -139,7 +140,7 @@ class MediaListPresenter(
                         media.type!!,
                         media.title!!.userPreferred,
                         media.coverImage!!.image(),
-                        media.coverImage!!.largeImage,
+                        media.coverImage!!.largeImage(),
                         media.bannerImage
                     )
                 ).postEvent

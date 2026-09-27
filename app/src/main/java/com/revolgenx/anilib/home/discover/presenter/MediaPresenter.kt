@@ -20,6 +20,7 @@ import com.revolgenx.anilib.media.data.model.MediaModel
 import com.revolgenx.anilib.search.data.model.SearchFilterEventModel
 import com.revolgenx.anilib.util.loginContinue
 import com.revolgenx.anilib.util.naText
+import com.revolgenx.anilib.ui.view.setCover
 
 class MediaPresenter(
     context: Context,
@@ -65,7 +66,7 @@ class MediaPresenter(
 
         holder[SELECTABLE_MEDIA_MODEL_KEY] = item
         binding.apply {
-            mediaSimpleDrawee.setImageURI(item.coverImage?.image())
+            mediaSimpleDrawee.setCover(item.coverImage)
             mediaRatingTv.text = item.averageScore
             mediaTitleTv.text = item.title?.title()
             mediaFormatTv.text = context.getString(R.string.format_episode_s).format(
@@ -102,7 +103,7 @@ class MediaPresenter(
                             item.type!!,
                             item.title!!.romaji!!,
                             item.coverImage!!.image(),
-                            item.coverImage!!.largeImage,
+                            item.coverImage!!.largeImage(),
                             item.bannerImage
                         )
                     ).postEvent

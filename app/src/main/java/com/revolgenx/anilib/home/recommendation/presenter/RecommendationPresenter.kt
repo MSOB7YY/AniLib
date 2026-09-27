@@ -23,6 +23,7 @@ import com.revolgenx.anilib.home.recommendation.viewmodel.RecommendationViewMode
 import com.revolgenx.anilib.ui.view.makeErrorToast
 import com.revolgenx.anilib.util.loginContinue
 import com.revolgenx.anilib.util.naText
+import com.revolgenx.anilib.ui.view.setCover
 
 class RecommendationPresenter(
     context: Context,
@@ -66,7 +67,7 @@ class RecommendationPresenter(
         holder.getBinding()?.apply {
             item.recommendationFrom?.let { from ->
                 recommendedFromTitleTv.text = from.title?.title()
-                recommendedFromImageView.setImageURI(from.coverImage?.image())
+                recommendedFromImageView.setCover(from.coverImage)
                 recommendedFromRatingTv.text = from.averageScore
                 recommendedFromStatusTv.text = from.status?.let {
                     recommendedFromStatusTv.color = Color.parseColor(statusColors[it])
@@ -86,7 +87,7 @@ class RecommendationPresenter(
                             from.type!!,
                             from.title!!.romaji!!,
                             from.coverImage!!.image(),
-                            from.coverImage!!.largeImage,
+                            from.coverImage!!.largeImage(),
                             from.bannerImage
                         )
                     ).postEvent
@@ -102,7 +103,7 @@ class RecommendationPresenter(
 
             item.recommended?.let { rec ->
                 recommendedTitleTv.text = rec.title?.title()
-                recommendedImageView.setImageURI(rec.coverImage?.image())
+                recommendedImageView.setCover(rec.coverImage)
                 recommendedMediaRatingTv.text = rec.averageScore
                 recommendedStatusTv.text = rec.status?.let {
                     recommendedStatusTv.color = Color.parseColor(statusColors[it])
@@ -121,7 +122,7 @@ class RecommendationPresenter(
                             rec.type!!,
                             rec.title!!.romaji!!,
                             rec.coverImage!!.image(),
-                            rec.coverImage!!.largeImage,
+                            rec.coverImage!!.largeImage(),
                             rec.bannerImage
                         )
                     ).postEvent
