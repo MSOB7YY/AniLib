@@ -7,6 +7,7 @@ import com.revolgenx.anilib.media.data.watch.WatchTorrentModel
 import com.revolgenx.anilib.media.data.watch.site.WatchSiteMedia
 import com.revolgenx.anilib.media.data.watch.site.WatchSiteResolvers
 import com.revolgenx.anilib.media.data.watch.site.WatchSiteStore
+import io.reactivex.Maybe
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
@@ -37,17 +38,19 @@ class WatchActionService(private val client: OkHttpClient) {
         }
 
         // a manually typed id has no episodes yet, only those are fetched then
-        val disposable = Single.fromCallable {
+        val disposable = Maybe.fromCallable<WatchSiteMedia> {
             cached?.let { it.copy(episodes = resolver.episodes(client, it.siteMediaId)) }
                 ?: resolver.resolve(client, media)
         }
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({ resolved ->
-                resolved?.let { WatchSiteStore.put(it) }
+                WatchSiteStore.put(resolved)
                 callback.invoke(resolved)
             }, {
                 Timber.w(it)
+                callback.invoke(null)
+            }, {
                 callback.invoke(null)
             })
 

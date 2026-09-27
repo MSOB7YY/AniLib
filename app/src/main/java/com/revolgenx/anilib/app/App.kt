@@ -44,6 +44,8 @@ import com.revolgenx.anilib.common.viewmodel.viewModelModules
 import com.revolgenx.anilib.social.factory.AlMarkwonFactory
 import com.revolgenx.anilib.social.infrastructure.service.activityServiceModules
 import com.revolgenx.anilib.social.ui.viewmodel.activityViewModelModules
+import io.reactivex.exceptions.UndeliverableException
+import io.reactivex.plugins.RxJavaPlugins
 import okhttp3.OkHttpClient
 
 
@@ -74,6 +76,7 @@ open class App : DynamicApplication() {
         } else {
             Timber.plant(AniLibDebugTree(this))
         }
+        ignoreUndeliverableRxErrors()
         setupFresco()
         setupNotificationWorker()
         startKoin {
@@ -93,6 +96,17 @@ open class App : DynamicApplication() {
         activityViewModelModules
     )
 
+
+    private fun ignoreUndeliverableRxErrors() {
+        RxJavaPlugins.setErrorHandler { error ->
+            if (error is UndeliverableException) {
+                Timber.w(error)
+                return@setErrorHandler
+            }
+            val thread = Thread.currentThread()
+            thread.uncaughtExceptionHandler?.uncaughtException(thread, error)
+        }
+    }
 
     private fun setupFresco() {
         val requestListeners: MutableSet<RequestListener> = HashSet()
