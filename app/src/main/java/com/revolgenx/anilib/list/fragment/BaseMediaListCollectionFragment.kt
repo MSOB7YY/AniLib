@@ -21,7 +21,9 @@ import com.revolgenx.anilib.common.viewmodel.getViewModelOwner
 import com.revolgenx.anilib.constant.MediaListDisplayMode
 import com.revolgenx.anilib.databinding.MediaListCollectionFragmentBinding
 import com.revolgenx.anilib.list.presenter.MediaListCollectionPresenter
+import com.revolgenx.anilib.list.bottomsheet.ListTagBottomSheet
 import com.revolgenx.anilib.list.bottomsheet.MediaListCollectionFilterBottomSheet
+import com.revolgenx.anilib.list.data.meta.MediaListCollectionFilterMeta
 import com.revolgenx.anilib.list.bottomsheet.MediaListDisplaySelectorBottomSheet
 import com.revolgenx.anilib.type.MediaType
 import com.revolgenx.anilib.list.viewmodel.MediaListCollectionVM
@@ -29,6 +31,11 @@ import com.revolgenx.anilib.list.viewmodel.MediaListContainerSharedVM
 import com.revolgenx.anilib.list.viewmodel.MediaListScroller
 import com.revolgenx.anilib.list.bottomsheet.MediaListGroupSelectorBottomSheet
 import com.revolgenx.anilib.list.data.model.MediaListModel
+import com.revolgenx.anilib.list.event.ListEvent
+import com.revolgenx.anilib.util.EventBusListener
+import com.revolgenx.anilib.util.registerForEvent
+import com.revolgenx.anilib.util.unRegisterForEvent
+import org.greenrobot.eventbus.Subscribe
 import com.revolgenx.anilib.list.viewmodel.MediaListCollectionContainerCallback
 import com.revolgenx.anilib.list.viewmodel.MediaListCollectionStoreVM
 import com.revolgenx.anilib.list.viewmodel.MediaListGroupState
@@ -36,7 +43,7 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 
 abstract class BaseMediaListCollectionFragment() :
-    BaseLayoutFragment<MediaListCollectionFragmentBinding>() {
+    BaseLayoutFragment<MediaListCollectionFragmentBinding>(), EventBusListener {
     abstract val mediaType: MediaType
 
     protected abstract val listCollectionStoreVM: MediaListCollectionStoreVM
@@ -54,8 +61,35 @@ abstract class BaseMediaListCollectionFragment() :
             requireContext(),
             isLoggedInUser,
             mediaType,
-            viewModel
+            viewModel,
+            onEditTags = { item -> openTagPicker(item) }
         )
+
+    override fun onStart() {
+        super.onStart()
+        registerForEvent()
+    }
+
+    override fun onStop() {
+        super.onStop()
+        unRegisterForEvent()
+    }
+
+    @Subscribe
+    fun onListEvent(event: ListEvent) {
+        when (event) {
+            is ListEvent.ListUpdateEvent -> viewModel.onEntryEdited(event.list)
+            is ListEvent.ListDeleteEvent -> viewModel.onEntryDeleted(event.id)
+            is ListEvent.ListAddEvent -> {}
+        }
+    }
+
+    private fun openTagPicker(item: MediaListModel) {
+        ListTagBottomSheet.newInstance(viewModel.getKnownTags(), item.tags) { tags ->
+            if (context == null) return@newInstance
+            viewModel.setTags(item, tags)
+        }.show(this)
+    }
 
     private val errorPresenter: Presenter<Unit> by lazy {
         Presenter.forErrorIndicator(requireContext(), R.layout.error_layout)
@@ -137,19 +171,7 @@ abstract class BaseMediaListCollectionFragment() :
                     MediaListCollectionContainerCallback.CURRENT_TAB -> {
                         updateCurrentGroupWithCount()
                     }
-                    MediaListCollectionContainerCallback.FILTER -> {
-                        MediaListCollectionFilterBottomSheet.newInstance(viewModel.mediaListFilter.copy()) {
-                            if (context == null) return@newInstance
-                            with(viewModel.mediaListFilter) {
-                                formatsIn = it.formatsIn
-                                sort = it.sort
-                                genre = it.genre
-                                status = it.status
-                                isHentai = it.isHentai
-                            }
-                            viewModel.applyFilter()
-                        }.show(requireContext())
-                    }
+                    MediaListCollectionContainerCallback.FILTER -> openFilterSheet()
                     MediaListCollectionContainerCallback.DISPLAY -> {
                         MediaListDisplaySelectorBottomSheet.newInstance(
                             if (isLoggedInUser) {
@@ -177,6 +199,16 @@ abstract class BaseMediaListCollectionFragment() :
 
         viewModel.groupNamesWithCount.observe(viewLifecycleOwner) {
             updateCurrentGroupWithCount()
+        }
+
+        viewModel.hiddenCount.observe(viewLifecycleOwner) { renderFilterInfo(it) }
+        alListFilterInfoLayout.setOnClickListener { openFilterSheet() }
+        alListFilterClearIv.setOnClickListener {
+            if (viewModel.hasGroupFilter) {
+                viewModel.clearGroupFilter()
+            } else {
+                viewModel.applyFilter(MediaListCollectionFilterMeta(), thisGroupOnly = false)
+            }
         }
 
         containerSharedVM.groupSelection.observe(viewLifecycleOwner) {
@@ -210,6 +242,35 @@ abstract class BaseMediaListCollectionFragment() :
         showAlListSearchView()
     }
 
+    private fun openFilterSheet() {
+        val group = viewModel.currentGroupNameHistory
+        MediaListCollectionFilterBottomSheet.newInstance(
+            viewModel.activeFilter.copy(),
+            groupName = group.takeIf { it != "All" },
+            thisGroupOnly = viewModel.hasGroupFilter,
+            knownTags = viewModel.getKnownTags()
+        ) { filter, thisGroupOnly ->
+            if (context == null) return@newInstance
+            viewModel.applyFilter(filter, thisGroupOnly)
+        }.show(requireContext())
+    }
+
+    private fun renderFilterInfo(hidden: Int) {
+        val filter = viewModel.activeFilter
+        val ownFilter = viewModel.hasGroupFilter
+        val visible = ownFilter || (hidden > 0 && filter.hidesAnything)
+        binding.alListFilterInfoLayout.visibility = if (visible) View.VISIBLE else View.GONE
+        if (!visible) return
+
+        val parts = mutableListOf<String>()
+        if (ownFilter) parts += getString(R.string.list_filter_own)
+        if (filter.hideNotYetReleased) parts += getString(R.string.list_filter_hiding_unreleased)
+        if (filter.hideWatchedSequels) parts += getString(R.string.list_filter_hiding_sequels)
+        filter.tags?.takeIf { it.isNotEmpty() }?.let { parts += it.joinToString(" ") { tag -> "#$tag" } }
+        parts += getString(R.string.list_filter_hidden_count).format(hidden)
+        binding.alListFilterInfoTv.text = parts.joinToString(" · ")
+    }
+
     private fun invalidateSource() {
         val source = viewModel.sourceLiveData.value ?: return
         invalidateAdapter(basePresenter, source)
@@ -224,7 +285,7 @@ abstract class BaseMediaListCollectionFragment() :
             ?.let { currentGroupName!! to it }
 
         containerSharedVM.groupState(mediaType).value = groupNamesWithCount?.let {
-            MediaListGroupState(it.toList(), currentGroupName)
+            MediaListGroupState(it.toList(), currentGroupName, viewModel.groupsWithOwnFilter)
         }
     }
 
@@ -242,6 +303,7 @@ abstract class BaseMediaListCollectionFragment() :
         }
         updateCurrentGroupWithCount()
         viewModel.filter()
+        renderFilterInfo(0)
     }
 
 

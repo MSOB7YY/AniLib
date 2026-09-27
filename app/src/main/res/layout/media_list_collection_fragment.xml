@@ -86,6 +86,49 @@
 
     </LinearLayout>
 
+    <LinearLayout
+        android:id="@+id/al_list_filter_info_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?attr/selectableItemBackground"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingStart="14dp"
+        android:paddingTop="2dp"
+        android:paddingEnd="6dp"
+        android:paddingBottom="2dp"
+        android:visibility="gone">
+
+        <com.pranavpandey.android.dynamic.support.widget.DynamicImageView
+            android:layout_width="13dp"
+            android:layout_height="13dp"
+            android:layout_marginEnd="6dp"
+            app:adt_colorType="accent"
+            app:srcCompat="@drawable/ic_filter" />
+
+        <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
+            android:id="@+id/al_list_filter_info_tv"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:ellipsize="end"
+            android:maxLines="3"
+            android:textSize="11sp"
+            app:adt_colorType="text_secondary"
+            tools:ignore="SmallSp"
+            tools:text="list filter · no unreleased · 12 hidden" />
+
+        <com.pranavpandey.android.dynamic.support.widget.DynamicImageView
+            android:id="@+id/al_list_filter_clear_iv"
+            android:layout_width="28dp"
+            android:layout_height="28dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:padding="7dp"
+            app:adt_colorType="text_secondary"
+            app:srcCompat="@drawable/ic_close" />
+
+    </LinearLayout>
+
     <include
         android:id="@+id/empty_layout"
         layout="@layout/empty_layout"

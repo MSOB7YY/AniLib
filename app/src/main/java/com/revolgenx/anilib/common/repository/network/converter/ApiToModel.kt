@@ -42,6 +42,10 @@ fun MediaWatchQuery.Media.toModel() = MediaWatchModel().also { model ->
     model.nextAiringEpisode = nextAiringEpisode?.episode
     model.nextAiringAt = nextAiringEpisode?.airingAt?.toLong()
     model.progress = mediaListEntry?.progress ?: 0
+    model.listEntryId = mediaListEntry?.id
+    model.listStatus = mediaListEntry?.status?.ordinal
+    model.startedAt = mediaListEntry?.startedAt?.fuzzyDate?.toModel()
+    model.completedAt = mediaListEntry?.completedAt?.fuzzyDate?.toModel()
     model.streamingEpisodes = streamingEpisodes?.mapNotNull { ep ->
         ep?.let {
             MediaStreamingEpisodeModel().also { stream ->

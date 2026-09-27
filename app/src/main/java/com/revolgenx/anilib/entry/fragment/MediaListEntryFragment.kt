@@ -27,9 +27,12 @@ import com.revolgenx.anilib.data.tuples.MutablePair
 import com.revolgenx.anilib.databinding.MediaListEntryFragmentLayoutBinding
 import com.revolgenx.anilib.entry.data.model.UserMediaModel
 import com.revolgenx.anilib.entry.viewmodel.MediaListEntryVM
+import com.revolgenx.anilib.list.data.tag.ListTags
+import com.revolgenx.anilib.ui.dialog.InputDialog
 import com.revolgenx.anilib.list.event.ListEvent
 import com.revolgenx.anilib.media.data.model.MediaModel
 import com.revolgenx.anilib.type.MediaType
+import com.revolgenx.anilib.type.MediaListStatus
 import com.revolgenx.anilib.type.ScoreFormat
 import com.revolgenx.anilib.ui.calendar.bottomsheet.CalendarViewBottomSheetDialog
 import com.revolgenx.anilib.ui.view.makeConfirmationDialog
@@ -203,7 +206,10 @@ class MediaListEntryFragment : BaseLayoutFragment<MediaListEntryFragmentLayoutBi
         }
 
         statusSpinner.onItemSelected {
-            saveField.status = MediaListStatusEditor.toMediaListStatus(it)
+            val status = MediaListStatusEditor.toMediaListStatus(it)
+            if (status == saveField.status) return@onItemSelected
+            viewModel.changeStatus(status)
+            changeDate()
         }
     }
 
@@ -324,12 +330,8 @@ class MediaListEntryFragment : BaseLayoutFragment<MediaListEntryFragmentLayoutBi
     }
 
     private fun MediaListEntryFragmentLayoutBinding.changeDate() {
-        saveField.startedAt?.let {
-            startDateTv.text = "${it.year}-${it.month}-${it.day}"
-        }
-        saveField.completedAt?.let {
-            finishDateTv.text = "${it.year}-${it.month}-${it.day}"
-        }
+        saveField.startedAt?.let { startDateTv.text = it.toString() }
+        saveField.completedAt?.let { finishDateTv.text = it.toString() }
     }
 
     private fun MediaListEntryFragmentLayoutBinding.bindTotalRewatch() {
@@ -350,13 +352,27 @@ class MediaListEntryFragment : BaseLayoutFragment<MediaListEntryFragmentLayoutBi
     }
 
     private fun MediaListEntryFragmentLayoutBinding.bindNotes() {
-        saveField.notes?.let {
-            notesEt.setText(it)
-        }
+        notesEt.setText(ListTags.strip(saveField.notes))
+        listTagChipGroup.onAddTag = { askNewTag() }
+        listTagChipGroup.setTags(ListTags.defaults, ListTags.parse(saveField.notes))
+    }
 
-        notesEt.doOnTextChanged { text, _, _, _ ->
-            saveField.notes = text.toString()
-        }
+    private fun askNewTag() {
+        InputDialog.newInstance(title = R.string.list_tag_add, hint = R.string.list_tag_hint)
+            .also { dialog ->
+                dialog.onInputDoneListener = { input ->
+                    ListTags.normalize(input)?.let { binding.listTagChipGroup.addTag(it) }
+                }
+            }
+            .show(childFragmentManager)
+    }
+
+    private fun composeNotes() {
+        val notes = binding.notesEt.text?.toString()
+        val typedTags = ListTags.parse(notes)
+        val pickedTags = binding.listTagChipGroup.getSelectedTags()
+        val tags = LinkedHashSet(typedTags) + pickedTags
+        saveField.notes = ListTags.compose(notes, tags)
     }
 
     private fun MediaListEntryFragmentLayoutBinding.bindCustomLists() {
@@ -508,6 +524,7 @@ class MediaListEntryFragment : BaseLayoutFragment<MediaListEntryFragmentLayoutBi
                 true
             }
             R.id.list_save_menu -> {
+                composeNotes()
                 viewModel.saveMediaListEntry()
                 true
             }

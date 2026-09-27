@@ -3,6 +3,9 @@ package com.revolgenx.anilib.media.viewmodel
 import androidx.lifecycle.MutableLiveData
 import com.revolgenx.anilib.common.repository.util.Resource
 import com.revolgenx.anilib.common.viewmodel.BaseViewModel
+import com.revolgenx.anilib.entry.service.ListProgressChange
+import com.revolgenx.anilib.entry.service.MediaListEntryService
+import com.revolgenx.anilib.list.data.model.MediaListModel
 import com.revolgenx.anilib.media.data.field.MediaWatchField
 import com.revolgenx.anilib.media.data.model.MediaEpisodeModel
 import com.revolgenx.anilib.media.data.model.MediaWatchModel
@@ -23,7 +26,8 @@ import com.revolgenx.anilib.media.source.MediaEpisodeSource
 
 class MediaWatchViewModel(
     private val mediaInfoService: MediaInfoService,
-    private val watchActionService: WatchActionService
+    private val watchActionService: WatchActionService,
+    private val entryService: MediaListEntryService
 ) : BaseViewModel() {
 
     val field = MediaWatchField()
@@ -45,6 +49,33 @@ class MediaWatchViewModel(
     val episodesLiveData = MutableLiveData<List<MediaEpisodeModel>>()
 
     val mediaType get() = model?.type
+    val progress get() = model?.progress ?: 0
+
+    fun setProgress(progress: Int, callback: (Resource<MediaListModel>) -> Unit) {
+        val current = model ?: return
+        val change = ListProgressChange(
+            entryId = current.listEntryId,
+            mediaId = current.mediaId,
+            status = current.listStatus,
+            progress = progress,
+            total = current.unitCount,
+            startedAt = current.startedAt,
+            completedAt = current.completedAt
+        )
+
+        entryService.saveMediaListEntry(change.toSaveField(), compositeDisposable) { resource ->
+            if (resource is Resource.Success) {
+                val saved = resource.data
+                current.progress = saved?.progress ?: progress
+                current.listEntryId = saved?.id ?: current.listEntryId
+                current.listStatus = saved?.status ?: change.newStatus ?: current.listStatus
+                saved?.startedAt?.let { current.startedAt = it }
+                saved?.completedAt?.let { current.completedAt = it }
+                rebuild()
+            }
+            callback.invoke(resource)
+        }
+    }
 
     fun load(force: Boolean = false) {
         if (loading) return

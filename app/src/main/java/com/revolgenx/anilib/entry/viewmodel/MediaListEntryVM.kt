@@ -13,6 +13,8 @@ import com.revolgenx.anilib.common.repository.util.Resource
 import com.revolgenx.anilib.infrastructure.service.toggle.ToggleService
 import com.revolgenx.anilib.list.data.model.MediaListModel
 import com.revolgenx.anilib.media.data.model.MediaModel
+import com.revolgenx.anilib.common.data.model.FuzzyDateModel
+import com.revolgenx.anilib.entry.service.todayFuzzyDate
 import com.revolgenx.anilib.type.MediaListStatus
 import com.revolgenx.anilib.type.MediaType
 
@@ -52,7 +54,7 @@ class MediaListEntryVM(
                 toggleFavouriteField.mangaId = media.id
             }
             media.mediaListEntry?.toSaveField() ?: with(saveField) {
-                status = MediaListStatus.CURRENT.ordinal
+                status = MediaListStatus.PLANNING.ordinal
                 score = 0.0
                 userMediaModel.user?.mediaListOptions?.let { mediaListOptionModel ->
                     if (media.isAnime()) {
@@ -83,6 +85,19 @@ class MediaListEntryVM(
     }
 
     private fun MediaModel.isAnime() = type == MediaType.ANIME.ordinal
+
+    fun changeStatus(status: Int) {
+        saveField.status = status
+        when (status) {
+            MediaListStatus.CURRENT.ordinal, MediaListStatus.REPEATING.ordinal ->
+                if (saveField.startedAt.isBlank()) saveField.startedAt = todayFuzzyDate()
+
+            MediaListStatus.COMPLETED.ordinal ->
+                if (saveField.completedAt.isBlank()) saveField.completedAt = todayFuzzyDate()
+        }
+    }
+
+    private fun FuzzyDateModel?.isBlank() = this == null || isEmpty()
 
     fun saveMediaListEntry() {
         if (saveField.id == null && saveField.mediaId == null) return

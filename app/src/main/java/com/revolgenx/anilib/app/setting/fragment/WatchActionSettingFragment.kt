@@ -47,6 +47,8 @@ class WatchActionSettingFragment : BaseToolbarFragment<WatchActionSettingFragmen
 
         ItemTouchHelper(DragCallback()).attachToRecyclerView(binding.watchActionRecyclerView)
 
+        WatchActionStore.changes.observe(viewLifecycleOwner) { reload() }
+
         binding.watchPreferredGroupsView.setOnClickListener {
             editPreference(
                 R.string.watch_preferred_groups,
@@ -89,11 +91,6 @@ class WatchActionSettingFragment : BaseToolbarFragment<WatchActionSettingFragmen
                 bindPreferences()
             }
         }.show(childFragmentManager)
-    }
-
-    override fun onResume() {
-        super.onResume()
-        reload()
     }
 
     private fun reload() {

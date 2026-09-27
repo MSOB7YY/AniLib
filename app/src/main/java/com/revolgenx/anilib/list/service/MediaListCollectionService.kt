@@ -1,5 +1,6 @@
 package com.revolgenx.anilib.list.service
 
+import com.revolgenx.anilib.MediaListCollectionQuery
 import com.revolgenx.anilib.app.setting.data.model.MediaListOptionModel
 import com.revolgenx.anilib.app.setting.data.model.MediaListOptionTypeModel
 import com.revolgenx.anilib.app.setting.data.model.getRowOrder
@@ -11,6 +12,8 @@ import com.revolgenx.anilib.list.data.model.MediaListGroupModel
 import com.revolgenx.anilib.list.data.model.MediaListModel
 import com.revolgenx.anilib.list.data.model.toModel
 import com.revolgenx.anilib.media.data.model.toModel
+import com.revolgenx.anilib.type.MediaListStatus
+import com.revolgenx.anilib.type.MediaRelation
 import com.revolgenx.anilib.user.data.model.UserModel
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
@@ -124,6 +127,7 @@ class MediaListCollectionService(private val graphRepository: BaseGraphRepositor
                                                     entry.user = collectionModel.user
                                                     entry.media = it.media?.mediaContent?.toModel()
                                                     entry.media?.synonyms = it.media?.synonyms?.filterNotNull()
+                                                    entry.media?.hasWatchedPrequel = it.media?.hasWatchedPrequel() == true
                                                     if ((groupModel.isCustomList.not() && entry.hiddenFromStatusLists.not()) || (groupModel.isCustomList && entry.hiddenFromStatusLists)) {
                                                         allEntries[entry.id] = entry
                                                     }
@@ -150,4 +154,14 @@ class MediaListCollectionService(private val graphRepository: BaseGraphRepositor
             })
         compositeDisposable.add(disposable)
     }
+}
+
+private fun MediaListCollectionQuery.Media.hasWatchedPrequel(): Boolean {
+    val ownType = mediaContent.type
+    return relations?.edges?.any { edge ->
+        val node = edge?.node ?: return@any false
+        if (edge.relationType != MediaRelation.PREQUEL || node.type != ownType) return@any false
+        val status = node.mediaListEntry?.status
+        status == MediaListStatus.COMPLETED || status == MediaListStatus.REPEATING
+    } == true
 }

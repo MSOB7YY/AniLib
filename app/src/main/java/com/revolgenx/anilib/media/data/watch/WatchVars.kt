@@ -9,6 +9,28 @@ import com.revolgenx.anilib.type.MediaType
 
 object WatchVars {
 
+    val names = listOf(
+        "media.id",
+        "media.idMal",
+        "media.title",
+        "media.title.romaji",
+        "media.title.english",
+        "media.title.native",
+        "media.title.userPreferred",
+        "media.synonyms.0",
+        "media.type",
+        "media.format",
+        "media.season",
+        "media.year",
+        "media.episodes",
+        "media.chapters",
+        "episode",
+        "episode.title",
+        "site.nekobt",
+        "site.nekobt.episode",
+        "preset.key"
+    )
+
     fun build(
         media: MediaWatchModel,
         episode: MediaEpisodeModel?,

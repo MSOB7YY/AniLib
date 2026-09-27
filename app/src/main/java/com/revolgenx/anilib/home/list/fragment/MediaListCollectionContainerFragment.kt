@@ -222,7 +222,6 @@ class MediaListCollectionContainerFragment :
 
                 val icon = groupIconOf(name)
                 chip.tag = name
-                chip.text = if (icon == null) "%s %d".format(name, count) else count.toString()
                 chip.chipIcon = icon?.let { AppCompatResources.getDrawable(requireContext(), it) }
                 chip.setOnClickListener {
                     sharedViewModel.groupSelection.value = name to currentMediaType.ordinal
@@ -232,8 +231,13 @@ class MediaListCollectionContainerFragment :
             }
         }
 
-        chipGroup.children.forEach { chip ->
-            (chip as MediaListGroupChip).isChecked = chip.tag == state?.selected
+        val ownFilter = state?.groupsWithOwnFilter.orEmpty()
+        chipGroup.children.forEachIndexed { index, chip ->
+            val (name, count) = groups.getOrNull(index) ?: return@forEachIndexed
+            chip as MediaListGroupChip
+            chip.isChecked = chip.tag == state?.selected
+            val label = if (groupIconOf(name) == null) "%s %d".format(name, count) else count.toString()
+            chip.text = if (name in ownFilter) "$label •" else label
         }
     }
 

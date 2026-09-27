@@ -81,7 +81,15 @@ query MediaWatchQuery($mediaId:Int){
             airingAt
         }
         mediaListEntry{
+            id
+            status
             progress
+            startedAt{
+                ... fuzzyDate
+            }
+            completedAt{
+                ... fuzzyDate
+            }
         }
         streamingEpisodes{
             title

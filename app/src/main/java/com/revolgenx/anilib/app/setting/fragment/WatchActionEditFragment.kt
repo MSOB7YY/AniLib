@@ -7,7 +7,9 @@ import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import android.widget.EditText
 import androidx.core.os.bundleOf
+import com.google.android.material.chip.Chip
 import com.pranavpandey.android.dynamic.support.dialog.DynamicDialog
 import com.pranavpandey.android.dynamic.support.model.DynamicMenu
 import com.pranavpandey.android.dynamic.theme.Theme
@@ -43,6 +45,7 @@ class WatchActionEditFragment : BaseToolbarFragment<WatchActionEditFragmentBindi
 
     private var action = WatchAction()
     private val params = mutableListOf<WatchActionParam>()
+    private var lastEditedTemplateField: EditText? = null
 
     private val scopes = WatchActionScope.values()
     private val mediaTypes = listOf(null, MediaType.ANIME.ordinal, MediaType.MANGA.ordinal)
@@ -70,7 +73,35 @@ class WatchActionEditFragment : BaseToolbarFragment<WatchActionEditFragmentBindi
         bindSpinners()
         renderFilters()
         renderParams()
+        renderVariableChips()
         updatePreview()
+    }
+
+    private fun renderVariableChips() {
+        val group = binding.watchActionVariableChipGroup
+        WatchVars.names.forEach { name ->
+            val chip = layoutInflater.inflate(
+                R.layout.media_list_group_chip,
+                group,
+                false
+            ) as Chip
+            chip.isCheckable = false
+            chip.text = name
+            chip.setOnClickListener { insertVariable(name) }
+            group.addView(chip)
+        }
+    }
+
+    private fun insertVariable(name: String) {
+        val target = lastEditedTemplateField ?: binding.watchActionPathEt
+        val start = target.selectionStart.coerceAtLeast(0)
+        val end = target.selectionEnd.coerceAtLeast(start)
+        target.text.replace(start, end, "{$name}")
+        target.requestFocus()
+    }
+
+    private fun EditText.trackAsTemplateField() {
+        setOnFocusChangeListener { _, hasFocus -> if (hasFocus) lastEditedTemplateField = this }
     }
 
     private fun bindFields() {
@@ -86,6 +117,8 @@ class WatchActionEditFragment : BaseToolbarFragment<WatchActionEditFragmentBindi
 
             watchActionUrlEt.onChanged { updatePreview() }
             watchActionPathEt.onChanged { updatePreview() }
+            watchActionUrlEt.trackAsTemplateField()
+            watchActionPathEt.trackAsTemplateField()
             watchActionSiteEt.onChanged {
                 action = action.copy(siteKey = it.ifBlank { null })
                 bindInlineSupport()
@@ -188,6 +221,7 @@ class WatchActionEditFragment : BaseToolbarFragment<WatchActionEditFragmentBindi
             val item = WatchActionParamItemBinding.inflate(layoutInflater, container, true)
             item.watchParamKeyEt.setText(param.key)
             item.watchParamValueEt.setText(param.value)
+            item.watchParamValueEt.trackAsTemplateField()
 
             item.watchParamKeyEt.onChanged { text ->
                 params.getOrNull(index)?.let { params[index] = it.copy(key = text) }
@@ -377,7 +411,7 @@ class WatchActionEditFragment : BaseToolbarFragment<WatchActionEditFragmentBindi
     }
 
     private fun View.onChanged(callback: (String) -> Unit) {
-        (this as? android.widget.EditText)?.addTextChangedListener(object : TextWatcher {
+        (this as? EditText)?.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
             override fun afterTextChanged(s: Editable?) {

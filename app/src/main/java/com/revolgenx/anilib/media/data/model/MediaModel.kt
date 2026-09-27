@@ -48,6 +48,7 @@ open class MediaModel : BaseModel() {
     var idMal: Int = -1
     var isAdult: Boolean = false
     var isFavourite: Boolean = false
+    var hasWatchedPrequel: Boolean = false
     var meanScore: Int? = null
     var mediaListEntry: MediaListModel? = null
     var nextAiringEpisode: AiringScheduleModel? = null

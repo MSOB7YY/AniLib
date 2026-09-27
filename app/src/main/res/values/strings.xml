@@ -175,6 +175,16 @@
     <string name="unfollow">Unfollow</string>
     <string name="stop_following_s">Stop following %1$s?</string>
     <string name="yes">Yes</string>
+    <string name="today">Today</string>
+    <string name="list_filter_this_list_only">Only this list (%1$s)</string>
+    <string name="list_filter_hide_not_yet_released">Hide not yet released</string>
+    <string name="list_filter_hide_watched_sequels">Hide sequels of watched entries</string>
+    <string name="list_filter_own">list filter</string>
+    <string name="list_filter_hiding_unreleased">no unreleased</string>
+    <string name="list_filter_hiding_sequels">no watched sequels</string>
+    <string name="list_filter_hidden_count">%1$d hidden</string>
+    <string name="list_tag_add">Add tag</string>
+    <string name="list_tag_hint">Tag name</string>
     <string name="no">No</string>
     <string name="follow">Follow</string>
     <string name="episode_airing_notif">%1$s %2$s %3$s %4$s %5$s</string>
@@ -759,6 +769,12 @@
     <string name="watch_not_aired">Not aired</string>
     <string name="watch_watched">Watched</string>
     <string name="watch_next_up">Next up</string>
+    <string name="watch_mark_watched">Mark watched</string>
+    <string name="watch_mark_unwatched">Mark unwatched</string>
+    <string name="watch_mark_confirm">Mark %1$s as watched?</string>
+    <string name="watch_mark_range_confirm">Mark %1$s up to %2$s as watched?</string>
+    <string name="watch_unmark_confirm">Move progress back to %1$s?</string>
+    <string name="watch_progress_saved">Progress saved</string>
     <string name="watch_inline_results">In app results</string>
     <string name="watch_open_in_browser">Open in browser</string>
     <string name="watch_seed_leech" translatable="false">%1$d ▲ %2$d ▼</string>
@@ -788,6 +804,9 @@
     <string name="watch_action_add_param">Add parameter</string>
     <string name="watch_action_site_filters">%1$s filters</string>
     <string name="watch_action_preview">Preview</string>
+    <string name="watch_action_variables">Variables</string>
+    <string name="watch_action_variables_hint">Tap a variable to insert it into the last edited field</string>
+    <string name="watch_action_syntax_help" translatable="false">"{episode|pad2}  filters: raw, path, lower, upper, slug, pad2, pad3\n{site.nekobt ?? media.title.romaji ?? \"text\"}  first non blank wins\n{?episode}…{/}  only when set\n{!site.nekobt}…{/}  only when empty"</string>
     <string name="watch_action_key">Key</string>
     <string name="watch_action_value">Value</string>
     <string name="watch_action_import">Import</string>

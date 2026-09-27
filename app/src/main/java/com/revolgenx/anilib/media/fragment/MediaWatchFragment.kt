@@ -16,6 +16,12 @@ import com.otaliastudios.elements.Adapter
 import com.otaliastudios.elements.Presenter
 import com.otaliastudios.elements.pagers.NoPagesPager
 import com.revolgenx.anilib.R
+import com.pranavpandey.android.dynamic.support.dialog.DynamicDialog
+import com.revolgenx.anilib.common.event.OpenMediaListEditorEvent
+import com.revolgenx.anilib.common.repository.util.Resource
+import com.revolgenx.anilib.common.viewmodel.getViewModelOwner
+import com.revolgenx.anilib.media.viewmodel.MediaInfoContainerSharedVM
+import com.revolgenx.anilib.ui.view.makeToast
 import com.revolgenx.anilib.common.ui.fragment.BaseLayoutFragment
 import com.revolgenx.anilib.databinding.MediaWatchFragmentBinding
 import com.revolgenx.anilib.media.bottomsheet.WatchActionBottomSheet
@@ -24,6 +30,7 @@ import com.revolgenx.anilib.media.data.meta.MediaInfoMeta
 import com.revolgenx.anilib.media.data.model.MediaEpisodeModel
 import com.revolgenx.anilib.media.data.watch.MediaEpisodeBuilder
 import com.revolgenx.anilib.media.data.watch.WatchAction
+import com.revolgenx.anilib.media.data.watch.WatchActionStore
 import com.revolgenx.anilib.media.data.watch.WatchEpisodeFilter
 import com.revolgenx.anilib.media.data.watch.site.WatchSiteResolvers
 import com.revolgenx.anilib.media.presenter.MediaWatchPresenter
@@ -51,9 +58,12 @@ class MediaWatchFragment : BaseLayoutFragment<MediaWatchFragmentBinding>() {
             coverImage = { coverImage },
             actionsOf = { episode -> viewModel.actions(episode.episodeScoped) },
             onRun = { action, episode -> runAction(action, episode) },
-            onMenu = { episode -> showSheet(episode) }
+            onMenu = { episode -> showSheet(episode) },
+            onToggleWatched = { episode -> confirmToggleWatched(episode) }
         )
     }
+
+    private val sharedViewModel by viewModel<MediaInfoContainerSharedVM>(owner = getViewModelOwner())
 
     private val loadingPresenter: Presenter<Unit> by lazy {
         Presenter.forLoadingIndicator(requireContext(), R.layout.loading_layout)
@@ -96,6 +106,8 @@ class MediaWatchFragment : BaseLayoutFragment<MediaWatchFragmentBinding>() {
             if (pendingScrollIndex == SCROLL_DONE) return@observe
             pendingScrollIndex = MediaEpisodeBuilder.nextToWatchIndex(episodes)
         }
+
+        WatchActionStore.changes.observe(viewLifecycleOwner) { viewModel.refreshActions() }
 
         viewModel.sourceLiveData.observe(viewLifecycleOwner) { source ->
             binding.watchSwipeToRefresh.isRefreshing = false
@@ -184,11 +196,6 @@ class MediaWatchFragment : BaseLayoutFragment<MediaWatchFragmentBinding>() {
         })
     }
 
-    override fun onResume() {
-        super.onResume()
-        viewModel.refreshActions()
-    }
-
     private fun renderFilterChips() {
         val group = binding.watchFilterChipGroup
 
@@ -244,9 +251,66 @@ class MediaWatchFragment : BaseLayoutFragment<MediaWatchFragmentBinding>() {
         }.show(this)
     }
 
+    private fun confirmToggleWatched(episode: MediaEpisodeModel) {
+        val number = episode.number ?: return
+        val progress = viewModel.progress
+        val target = if (episode.watched) number - 1 else number
+        val marksMany = !episode.watched && number - progress > 1
+
+        val message = when {
+            episode.watched -> getString(R.string.watch_unmark_confirm).format(unitTitle(target))
+            marksMany -> getString(R.string.watch_mark_range_confirm)
+                .format(unitTitle(progress + 1), unitTitle(number))
+
+            else -> getString(R.string.watch_mark_confirm).format(unitTitle(number))
+        }
+
+        DynamicDialog.Builder(requireContext())
+            .setMessage(message)
+            .setPositiveButton(R.string.yes) { _, _ -> saveProgress(target) }
+            .setNegativeButton(R.string.cancel, null)
+            .also { builder ->
+                if (marksMany) builder.setNeutralButton(R.string.edit) { _, _ ->
+                    OpenMediaListEditorEvent(viewModel.field.mediaId).postEvent
+                }
+            }
+            .show()
+    }
+
+    private fun saveProgress(progress: Int) {
+        viewModel.setProgress(progress) { resource ->
+            when (resource) {
+                is Resource.Success -> {
+                    makeToast(R.string.watch_progress_saved)
+                    sharedViewModel.onListEntryDataChanged?.invoke(resource)
+                }
+
+                is Resource.Error -> makeToast(R.string.operation_failed)
+                else -> {}
+            }
+        }
+    }
+
+    private fun unitTitle(number: Int): String =
+        if (viewModel.mediaType == MediaType.MANGA.ordinal) {
+            getString(R.string.watch_chapter).format(number)
+        } else {
+            getString(R.string.watch_episode).format(number)
+        }
+
     private fun extrasOf(episode: MediaEpisodeModel): List<WatchSheetExtra> {
         val extras = mutableListOf<WatchSheetExtra>()
         val target = episode.target()
+
+        if (!episode.batch && episode.number != null) {
+            extras += WatchSheetExtra(
+                title = getString(
+                    if (episode.watched) R.string.watch_mark_unwatched else R.string.watch_mark_watched
+                ),
+                subtitle = null,
+                icon = if (episode.watched) R.drawable.ic_uncheck_circle else R.drawable.ic_check_circle
+            ) { confirmToggleWatched(episode) }
+        }
 
         episode.streamingUrl?.takeIf { it.isNotBlank() }?.let { url ->
             extras += WatchSheetExtra(
@@ -313,10 +377,7 @@ class MediaWatchFragment : BaseLayoutFragment<MediaWatchFragmentBinding>() {
     private fun titleOf(episode: MediaEpisodeModel): String = when {
         episode.batch -> getString(R.string.watch_all_episodes)
         episode.number == null -> episode.title.orEmpty()
-        viewModel.mediaType == MediaType.MANGA.ordinal ->
-            getString(R.string.watch_chapter).format(episode.number)
-
-        else -> getString(R.string.watch_episode).format(episode.number)
+        else -> unitTitle(episode.number)
     }
 
     private fun MediaEpisodeModel.target(): MediaEpisodeModel? = if (batch) null else this

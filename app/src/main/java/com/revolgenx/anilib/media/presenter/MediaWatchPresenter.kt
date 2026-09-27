@@ -2,6 +2,7 @@ package com.revolgenx.anilib.media.presenter
 
 import android.content.Context
 import android.graphics.Color
+import android.graphics.PorterDuff
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,6 +13,7 @@ import com.otaliastudios.elements.Page
 import com.pranavpandey.android.dynamic.support.widget.DynamicButton
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.app.theme.contrastAccentWithSurface
+import com.revolgenx.anilib.app.theme.dynamicTheme
 import com.revolgenx.anilib.common.presenter.BasePresenter
 import com.revolgenx.anilib.databinding.MediaWatchPresenterBinding
 import com.revolgenx.anilib.media.data.model.MediaEpisodeModel
@@ -25,13 +27,15 @@ class MediaWatchPresenter(
     private val coverImage: () -> String?,
     private val actionsOf: (MediaEpisodeModel) -> List<WatchAction>,
     private val onRun: (WatchAction, MediaEpisodeModel) -> Unit,
-    private val onMenu: (MediaEpisodeModel) -> Unit
+    private val onMenu: (MediaEpisodeModel) -> Unit,
+    private val onToggleWatched: (MediaEpisodeModel) -> Unit
 ) : BasePresenter<MediaWatchPresenterBinding, MediaEpisodeModel>(context) {
 
     override val elementTypes: Collection<Int>
         get() = listOf(0)
 
     private val watchedColor by lazy { ContextCompat.getColor(context, R.color.watch_watched_color) }
+    private val secondaryTextColor by lazy { dynamicTheme.textSecondaryColor }
     private val separatorColor by lazy { ColorUtils.setAlphaComponent(contrastAccentWithSurface, SEPARATOR_ALPHA) }
     private val thumbnailWidth by lazy { context.resources.getDimensionPixelSize(R.dimen.watch_thumbnail_width) }
     private val emphasizedWidth by lazy { context.resources.getDimensionPixelSize(R.dimen.watch_thumbnail_width_large) }
@@ -84,6 +88,19 @@ class MediaWatchPresenter(
             if (item.batch) watchSeparatorView.setBackgroundColor(separatorColor)
 
             watchMenuIv.setOnClickListener { onMenu.invoke(item) }
+
+            val markable = !item.batch && item.number != null
+            watchWatchedIv.visibility = if (markable) View.VISIBLE else View.GONE
+            if (markable) {
+                watchWatchedIv.setImageResource(
+                    if (item.watched) R.drawable.ic_check_circle else R.drawable.ic_uncheck_circle
+                )
+                watchWatchedIv.setColorFilter(
+                    if (item.watched) contrastAccentWithSurface else secondaryTextColor,
+                    PorterDuff.Mode.SRC_IN
+                )
+                watchWatchedIv.setOnClickListener { onToggleWatched.invoke(item) }
+            }
             watchContainer.setOnLongClickListener {
                 onMenu.invoke(item)
                 true

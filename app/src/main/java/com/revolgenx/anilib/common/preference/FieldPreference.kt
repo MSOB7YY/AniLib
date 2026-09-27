@@ -2,6 +2,7 @@ package com.revolgenx.anilib.common.preference
 
 import android.content.Context
 import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 import com.revolgenx.anilib.airing.data.field.AiringMediaField
 import com.revolgenx.anilib.app.setting.data.meta.DiscoverOrderType
 import com.revolgenx.anilib.constant.*
@@ -62,6 +63,8 @@ const val AIRING_WATCHING_KEY = "AIRING_WATCHING_KEY"
 
 const val ANIME_MEDIA_LIST_COLLECTION_FILTER_KEY = "ANIME_MEDIA_LIST_COLLECTION_FILTER_KEY"
 const val MANGA_MEDIA_LIST_COLLECTION_FILTER_KEY = "MANGA_MEDIA_LIST_COLLECTION_FILTER_KEY"
+const val ANIME_MEDIA_LIST_GROUP_FILTER_KEY = "ANIME_MEDIA_LIST_GROUP_FILTER_KEY"
+const val MANGA_MEDIA_LIST_GROUP_FILTER_KEY = "MANGA_MEDIA_LIST_GROUP_FILTER_KEY"
 
 
 const val RECOMMENDATION_ON_LIST_KEY = "RECOMMENDATION_ON_LIST_KEY"
@@ -424,6 +427,25 @@ fun storeMediaListFilterField(filter: MediaListCollectionFilterMeta) {
         if (filter.type == 0) ANIME_MEDIA_LIST_COLLECTION_FILTER_KEY else MANGA_MEDIA_LIST_COLLECTION_FILTER_KEY,
         json
     ) // 0 = anime media type
+}
+
+private val mediaListGroupFilterType =
+    object : TypeToken<MutableMap<String, MediaListCollectionFilterMeta>>() {}.type
+
+fun storeMediaListGroupFilters(type: Int, filters: Map<String, MediaListCollectionFilterMeta>) {
+    dynamicPreferences.save(
+        if (type == 0) ANIME_MEDIA_LIST_GROUP_FILTER_KEY else MANGA_MEDIA_LIST_GROUP_FILTER_KEY,
+        Gson().toJson(filters, mediaListGroupFilterType)
+    )
+}
+
+fun loadMediaListGroupFilters(type: Int): MutableMap<String, MediaListCollectionFilterMeta> {
+    val json = dynamicPreferences.load(
+        if (type == 0) ANIME_MEDIA_LIST_GROUP_FILTER_KEY else MANGA_MEDIA_LIST_GROUP_FILTER_KEY,
+        ""
+    )
+    if (json.isNullOrBlank()) return mutableMapOf()
+    return Gson().fromJson(json, mediaListGroupFilterType) ?: mutableMapOf()
 }
 
 fun loadMediaListCollectionFilter(type: Int): MediaListCollectionFilterMeta {

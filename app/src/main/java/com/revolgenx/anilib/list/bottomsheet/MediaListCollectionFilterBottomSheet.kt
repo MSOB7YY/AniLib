@@ -32,18 +32,34 @@ class MediaListCollectionFilterBottomSheet :
             ?: MediaListCollectionFilterMeta()
     }
 
-    private var onFilterMediaList: ((filter: MediaListCollectionFilterMeta) -> Unit)? = null
+    private var onFilterMediaList: ((filter: MediaListCollectionFilterMeta, thisGroupOnly: Boolean) -> Unit)? =
+        null
+
+    private val groupName get() = arguments?.getString(GROUP_NAME_KEY)
+    private val knownTags get() = arguments?.getStringArrayList(KNOWN_TAGS_KEY).orEmpty()
+    private val thisGroupOnly get() = arguments?.getBoolean(THIS_GROUP_ONLY_KEY) == true
 
     companion object {
         private const val media_list_collection_filter_meta_key =
             "media_list_collection_filter_meta_key"
+        private const val GROUP_NAME_KEY = "GROUP_NAME_KEY"
+        private const val THIS_GROUP_ONLY_KEY = "THIS_GROUP_ONLY_KEY"
+        private const val KNOWN_TAGS_KEY = "KNOWN_TAGS_KEY"
 
         fun newInstance(
             meta: MediaListCollectionFilterMeta,
-            onFilterMediaList: (filter: MediaListCollectionFilterMeta) -> Unit
+            groupName: String?,
+            thisGroupOnly: Boolean,
+            knownTags: List<String>,
+            onFilterMediaList: (filter: MediaListCollectionFilterMeta, thisGroupOnly: Boolean) -> Unit
         ) =
             MediaListCollectionFilterBottomSheet().also {
-                it.arguments = bundleOf(media_list_collection_filter_meta_key to meta)
+                it.arguments = bundleOf(
+                    media_list_collection_filter_meta_key to meta,
+                    GROUP_NAME_KEY to groupName,
+                    THIS_GROUP_ONLY_KEY to thisGroupOnly,
+                    KNOWN_TAGS_KEY to ArrayList(knownTags)
+                )
                 it.onFilterMediaList = onFilterMediaList
             }
     }
@@ -74,9 +90,12 @@ class MediaListCollectionFilterBottomSheet :
                 isHentai = binding.hentaiCheckbox.state.takeIf { it != AlCheckBox.CheckBoxState.UNCHECKED }?.let {
                     it == AlCheckBox.CheckBoxState.CHECKED
                 }
+                hideNotYetReleased = binding.hideNotYetReleasedCb.isChecked
+                hideWatchedSequels = binding.hideWatchedSequelsCb.isChecked
+                tags = binding.listTagChipGroup.getSelectedTags().takeIf { it.isNotEmpty() }?.toMutableList()
             }
 
-            onFilterMediaList?.invoke(mediaListFilter)
+            onFilterMediaList?.invoke(mediaListFilter, binding.thisListOnlyCb.isChecked)
         }
     }
 
@@ -120,6 +139,14 @@ class MediaListCollectionFilterBottomSheet :
 
         listStatusSpinner.adapter = makeSpinnerAdapter(requireContext(), listStatusItems)
         listGenreSpinner.adapter = makeSpinnerAdapter(requireContext(), listGenreItems)
+
+        val group = groupName
+        thisListOnlyCb.visibility = if (group == null) View.GONE else View.VISIBLE
+        thisListOnlyCb.text = getString(R.string.list_filter_this_list_only).format(group.orEmpty())
+        thisListOnlyCb.isChecked = thisGroupOnly
+        hideNotYetReleasedCb.isChecked = mediaListFilter.hideNotYetReleased
+        hideWatchedSequelsCb.isChecked = mediaListFilter.hideWatchedSequels
+        listTagChipGroup.setTags(knownTags, mediaListFilter.tags.orEmpty())
 
 
         mediaListFilter.formatsIn = mediaListFilter.formatsIn ?: mutableListOf()

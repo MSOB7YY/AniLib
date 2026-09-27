@@ -315,8 +315,19 @@ class CalendarViewBottomSheetDialog :
 
         calendarView.scrollMode = ScrollMode.PAGED
         calendarView.setup(start, end, firstDayOfWeek)
-        calendarView.scrollToDate(today)
+        selectedViewDate = selectedDate ?: selectedDateStart ?: today
+        calendarView.scrollToDate(selectedViewDate)
+        monthAdapter.updateCurrentYearMonth(selectedViewDate.yearMonth)
         updateSpinnerValues()
+
+        todayButton.setOnClickListener {
+            if (selectionMode == SelectionMode.DATE) {
+                selectedDate = today
+                setCurrentDateText(today)
+                calendarView.notifyCalendarChanged()
+            }
+            jumpTo(today)
+        }
 
         setupDayBinding()
         setupMonthHeaderBinding()
@@ -542,6 +553,16 @@ class CalendarViewBottomSheetDialog :
         }
     }
 
+
+    private fun jumpTo(date: LocalDate) {
+        binding.monthSpinner.isChecked = false
+        binding.yearSpinner.isChecked = false
+        selectedViewDate = date
+        binding.calendarView.scrollToDate(date)
+        monthAdapter.updateCurrentYearMonth(date.yearMonth)
+        updateSpinnerValues()
+        switchToCalendarView()
+    }
 
     private fun selectMonth(month: Month) {
         binding.monthSpinner.isChecked = false

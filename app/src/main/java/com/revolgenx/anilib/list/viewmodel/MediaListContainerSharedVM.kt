@@ -29,7 +29,8 @@ class MediaListContainerSharedVM : ViewModel() {
 /** The groups a list page can be filtered by, in the order the user ordered them. */
 data class MediaListGroupState(
     val groups: List<Pair<String, Int>>,
-    val selected: String?
+    val selected: String?,
+    val groupsWithOwnFilter: Set<String> = emptySet()
 )
 
 /**

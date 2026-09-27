@@ -2,6 +2,7 @@
 
 <androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -9,6 +10,15 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
+
+        <com.pranavpandey.android.dynamic.support.widget.DynamicCheckBox
+            android:id="@+id/this_list_only_cb"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="4dp"
+            android:visibility="gone"
+            tools:text="Only this list (Planning)"
+            tools:visibility="visible" />
 
         <FrameLayout
             android:id="@+id/format_add_header"
@@ -84,6 +94,32 @@
 
         </com.revolgenx.anilib.ui.view.widgets.AlCardView>
 
+
+        <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
+            style="@style/FilterHeaderStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/tags" />
+
+        <com.revolgenx.anilib.ui.view.widgets.chip.ListTagChipGroup
+            android:id="@+id/list_tag_chip_group"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:chipSpacingHorizontal="6dp"
+            app:chipSpacingVertical="4dp" />
+
+        <com.pranavpandey.android.dynamic.support.widget.DynamicCheckBox
+            android:id="@+id/hide_not_yet_released_cb"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="@string/list_filter_hide_not_yet_released" />
+
+        <com.pranavpandey.android.dynamic.support.widget.DynamicCheckBox
+            android:id="@+id/hide_watched_sequels_cb"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/list_filter_hide_watched_sequels" />
 
         <com.revolgenx.anilib.ui.view.widgets.checkbox.AlCheckBox
             android:id="@+id/hentai_checkbox"

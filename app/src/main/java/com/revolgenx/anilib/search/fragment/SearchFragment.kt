@@ -8,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.EditorInfo
 import androidx.appcompat.widget.Toolbar
 import androidx.core.os.bundleOf
 import androidx.core.widget.doOnTextChanged
@@ -69,6 +70,7 @@ class SearchFragment : BasePresenterFragment<BaseModel>() {
     private val handler = Handler(Looper.getMainLooper())
 
     private var applyingFilter = false
+    private var eventSort: Int? = null
 
     override fun createSource(): Source<BaseModel> {
         return viewModel.createSource()
@@ -127,6 +129,7 @@ class SearchFragment : BasePresenterFragment<BaseModel>() {
                     (field.searchFilterModel.tagsIn ?: mutableListOf()).also { it.add(tag) }
                 field.searchFilterModel.tagsIn = filterModel.tagsIn?.toMutableList()
             }
+            eventSort = it.sort
             filterModel.sort = it.sort
             field.searchFilterModel.sort = filterModel.sort
         }
@@ -173,7 +176,14 @@ class SearchFragment : BasePresenterFragment<BaseModel>() {
                 applyingFilter = false
                 return@doOnTextChanged
             }
+            dropEventSortOnTypedSearch()
             search()
+        }
+        searchEt.setOnEditorActionListener { _, actionId, _ ->
+            if (actionId != EditorInfo.IME_ACTION_SEARCH) return@setOnEditorActionListener false
+            handler.removeCallbacksAndMessages(null)
+            filter()
+            true
         }
 
         searchTypeTabLayout.doOnTabSelected(viewLifecycleOwner) { _, position ->
@@ -202,6 +212,14 @@ class SearchFragment : BasePresenterFragment<BaseModel>() {
             }
             it.show(this@SearchFragment)
         }
+    }
+
+    private fun dropEventSortOnTypedSearch() {
+        val forced = eventSort ?: return
+        if (field.search.isNullOrBlank() || filterModel.sort != forced) return
+        eventSort = null
+        filterModel.sort = null
+        field.searchFilterModel.sort = null
     }
 
     private fun search() {
@@ -249,6 +267,7 @@ class SearchFragment : BasePresenterFragment<BaseModel>() {
 
     private fun SearchFragmentLayoutBinding.applyFilter(){
         applyingFilter = true
+        eventSort = null
         searchTypeTabLayout.getTabAt(field.searchFilterModel.searchType.ordinal)?.select()
         searchEt.setText(field.search)
         filter()

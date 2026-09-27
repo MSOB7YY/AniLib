@@ -12,6 +12,12 @@ class SearchField : BaseSourceField<Any>() {
     var search: String? = null
     var searchFilterModel = SearchFilterModel()
 
+    private fun mediaSort(): List<MediaSort>? {
+        val selected = searchFilterModel.sort?.let { MediaSort.values()[it] }
+        if (search.isNullOrBlank()) return selected?.let { listOf(it) }
+        return listOfNotNull(MediaSort.SEARCH_MATCH, selected)
+    }
+
     override fun toQueryOrMutation(): Any {
         searchFilterModel.apply {
             return when (searchType) {
@@ -39,7 +45,7 @@ class SearchField : BaseSourceField<Any>() {
                         year = nn(year?.let { "$it%" }),
                         status = nn(status?.let { MediaStatus.values()[it] }),
                         country = nn(countryOfOrigin?.let { CountryOfOrigins.values()[it].name }),
-                        sort = nn(sort?.let { listOf(MediaSort.values()[it]) }),
+                        sort = nn(mediaSort()),
                         source = nn(source?.let { MediaSource.values()[it] }),
                         minimumTagRank = nn(minimumTagRank),
                         onList = nn(onList)
@@ -69,7 +75,7 @@ class SearchField : BaseSourceField<Any>() {
                         seasonYear = nn(year),
                         status = nn(status?.let { MediaStatus.values()[it] }),
                         country = nn(countryOfOrigin?.let { CountryOfOrigins.values()[it].name }),
-                        sort = nn(sort?.let { listOf(MediaSort.values()[it]) }),
+                        sort = nn(mediaSort()),
                         source = nn(source?.let { MediaSource.values()[it] }),
                         minimumTagRank = nn(minimumTagRank),
                         onList = nn(onList)

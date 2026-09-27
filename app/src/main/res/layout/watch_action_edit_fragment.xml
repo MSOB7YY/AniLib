@@ -163,6 +163,38 @@
             style="@style/SettingHeaderStyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:text="@string/watch_action_variables" />
+
+        <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/watch_action_variables_hint"
+            android:textSize="11sp"
+            app:adt_colorType="text_secondary"
+            tools:ignore="SmallSp" />
+
+        <com.google.android.material.chip.ChipGroup
+            android:id="@+id/watch_action_variable_chip_group"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            app:chipSpacingHorizontal="6dp"
+            app:chipSpacingVertical="4dp" />
+
+        <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="6dp"
+            android:fontFamily="monospace"
+            android:text="@string/watch_action_syntax_help"
+            android:textSize="11sp"
+            app:adt_colorType="text_secondary"
+            tools:ignore="SmallSp" />
+
+        <com.pranavpandey.android.dynamic.support.widget.DynamicTextView
+            style="@style/SettingHeaderStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:text="@string/watch_action_preview" />
 
         <com.pranavpandey.android.dynamic.support.widget.DynamicTextView

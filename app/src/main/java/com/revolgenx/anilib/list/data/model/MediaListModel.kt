@@ -6,6 +6,7 @@ import com.revolgenx.anilib.data.tuples.MutablePair
 import com.revolgenx.anilib.fragment.MediaListEntry
 import com.revolgenx.anilib.common.repository.network.converter.toModel
 import com.revolgenx.anilib.common.repository.util.Resource
+import com.revolgenx.anilib.list.data.tag.ListTags
 import com.revolgenx.anilib.media.data.model.MediaModel
 import com.revolgenx.anilib.user.data.model.UserModel
 
@@ -36,7 +37,34 @@ class MediaListModel : BaseModel() {
     /** True while a progress increment is in flight, so a recycled row keeps showing the spinner. */
     var isProgressUpdating = false
 
+    private var tagsNotes: String? = null
+    private var tagsCache: List<String> = emptyList()
+
+    val tags: List<String>
+        get() {
+            val current = notes
+            if (current !== tagsNotes) {
+                tagsNotes = current
+                tagsCache = ListTags.parse(current)
+            }
+            return tagsCache
+        }
+
     var onDataChanged: ((Resource<MediaListModel>) -> Unit)? = null
+
+    fun updateFrom(edited: MediaListModel) {
+        status = edited.status
+        score = edited.score
+        progress = edited.progress
+        progressVolumes = edited.progressVolumes
+        repeat = edited.repeat
+        private = edited.private
+        notes = edited.notes
+        hiddenFromStatusLists = edited.hiddenFromStatusLists
+        startedAt = edited.startedAt
+        completedAt = edited.completedAt
+        customLists = edited.customLists
+    }
 }
 
 fun MediaListEntry.toModel() = MediaListModel().also { model ->

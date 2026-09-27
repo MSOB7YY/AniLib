@@ -1,5 +1,6 @@
 package com.revolgenx.anilib.media.data.model
 
+import com.revolgenx.anilib.common.data.model.FuzzyDateModel
 import com.revolgenx.anilib.type.MediaType
 
 class MediaWatchModel {
@@ -16,6 +17,10 @@ class MediaWatchModel {
     var nextAiringEpisode: Int? = null
     var nextAiringAt: Long? = null
     var progress: Int = 0
+    var listEntryId: Int? = null
+    var listStatus: Int? = null
+    var startedAt: FuzzyDateModel? = null
+    var completedAt: FuzzyDateModel? = null
     var streamingEpisodes: List<MediaStreamingEpisodeModel> = emptyList()
 
     val isAnime get() = type == MediaType.ANIME.ordinal

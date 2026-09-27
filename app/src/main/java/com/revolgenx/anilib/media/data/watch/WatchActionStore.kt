@@ -1,5 +1,7 @@
 package com.revolgenx.anilib.media.data.watch
 
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.revolgenx.anilib.common.preference.load
@@ -16,6 +18,9 @@ object WatchActionStore {
     private val type = object : TypeToken<List<WatchAction>>() {}.type
 
     private var cache: List<WatchAction>? = null
+
+    private val changeCounter = MutableLiveData(0)
+    val changes: LiveData<Int> get() = changeCounter
 
     fun all(): List<WatchAction> {
         cache?.let { return it }
@@ -83,6 +88,7 @@ object WatchActionStore {
     private fun persist(actions: List<WatchAction>) {
         cache = actions
         save(WATCH_ACTION_KEY, gson.toJson(actions, type))
+        changeCounter.value = (changeCounter.value ?: 0) + 1
     }
 
     private fun seeds(): List<WatchAction> {

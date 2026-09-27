@@ -33,6 +33,7 @@ import com.revolgenx.anilib.search.data.model.SearchFilterEventModel
 import com.revolgenx.anilib.type.MediaType
 import com.revolgenx.anilib.type.ScoreFormat
 import com.revolgenx.anilib.ui.view.GenreLayout
+import com.revolgenx.anilib.ui.view.widgets.ListTagRowView
 import com.revolgenx.anilib.ui.view.makeToast
 import com.revolgenx.anilib.ui.view.setProgressUpdating
 import com.revolgenx.anilib.ui.view.score.MediaScoreBadge
@@ -43,7 +44,8 @@ class MediaListCollectionPresenter(
     context: Context,
     private val isLoggedInUser: Boolean = false,
     private val mediaType: MediaType,
-    private val viewModel: MediaListCollectionVM
+    private val viewModel: MediaListCollectionVM,
+    private val onEditTags: (MediaListModel) -> Unit
 ) : BasePresenter<ViewBinding, MediaListModel>(context) {
     override val elementTypes: Collection<Int> = listOf(0)
 
@@ -117,6 +119,7 @@ class MediaListCollectionPresenter(
         var genreLayout: GenreLayout? = null
         var startDateTv: TextView? = null
         var mediaListProgressIncrease: DynamicImageView? = null
+        var tagRow: ListTagRowView? = null
 
         binding.also {
             when (it) {
@@ -128,6 +131,7 @@ class MediaListCollectionPresenter(
                     progressTv = it.mediaListProgressTv
                     scoreBadgeTv = it.mediaListRatingTv
                     mediaListProgressIncrease = it.mediaListProgressIncrease
+                    tagRow = it.mediaListTagRow
                 }
                 is MediaListCollectionNormalPresenterLayoutBinding -> {
                     titleTv = it.mediaListTitleTv
@@ -139,6 +143,7 @@ class MediaListCollectionPresenter(
                     genreLayout = it.mediaListGenreLayout
                     startDateTv = it.mediaListStartDateTv
                     mediaListProgressIncrease = it.mediaListProgressIncrease
+                    tagRow = it.mediaListTagRow
                 }
                 is MediaListCollectionCardPresenterLayoutBinding -> {
                     titleTv = it.mediaListTitleTv
@@ -148,6 +153,7 @@ class MediaListCollectionPresenter(
                     progressTv = it.mediaListProgressTv
                     scoreBadgeTv = it.mediaListRatingTv
                     mediaListProgressIncrease = it.mediaListProgressIncrease
+                    tagRow = it.mediaListTagRow
                 }
                 is MediaListCollectionMinimalPresenterLayoutBinding -> {
                     titleTv = it.mediaListTitleTv
@@ -170,6 +176,7 @@ class MediaListCollectionPresenter(
                     progressTv = it.mediaListProgressTv
                     scoreBadgeTv = it.mediaListRatingTv
                     mediaListProgressIncrease = it.mediaListProgressIncrease
+                    tagRow = it.mediaListTagRow
                 }
             }
 
@@ -196,6 +203,12 @@ class MediaListCollectionPresenter(
                 OpenSearchEvent(SearchFilterEventModel(genre = genre)).postEvent
             }
 
+            tagRow?.let { row ->
+                row.visibility = if (isLoggedInUser || item.tags.isNotEmpty()) View.VISIBLE else View.GONE
+                row.setTags(item.tags, showPlaceholder = isLoggedInUser)
+                row.setOnClickListener { if (isLoggedInUser) onEditTags.invoke(item) }
+            }
+
             startDateTv?.text = context.getString(R.string.startdate_format)
                 .format(
                     item.media?.startDate?.toString().naText(),
@@ -203,25 +216,7 @@ class MediaListCollectionPresenter(
                 )
 
 
-            when (item.user?.mediaListOptions?.scoreFormat) {
-                ScoreFormat.POINT_3.ordinal -> {
-                    val drawable = when (item.score?.toInt()) {
-                        1 -> R.drawable.ic_score_sad
-                        2 -> R.drawable.ic_score_neutral
-                        3 -> R.drawable.ic_score_smile
-                        else -> R.drawable.ic_role
-                    }
-                    scoreBadgeTv?.setImageResource(drawable)
-                    scoreBadgeTv?.scoreTextVisibility = View.GONE
-
-                }
-                ScoreFormat.POINT_10_DECIMAL.ordinal -> {
-                    scoreBadgeTv?.setText(item.score)
-                }
-                else -> {
-                    scoreBadgeTv?.text = item.score?.toInt()
-                }
-            }
+            scoreBadgeTv?.updateScoreView(item)
 
 
             it.root.setOnClickListener {
@@ -259,6 +254,8 @@ class MediaListCollectionPresenter(
                 when(it){
                     is Resource.Success -> {
                         progressTv?.updateProgressView(item)
+                        scoreBadgeTv?.updateScoreView(item)
+                        tagRow?.setTags(item.tags, showPlaceholder = isLoggedInUser)
                     }
                     is Resource.Error -> {
                         context.makeToast(R.string.operation_failed)
@@ -266,6 +263,23 @@ class MediaListCollectionPresenter(
                     else -> {}
                 }
             }
+        }
+    }
+
+    private fun MediaScoreBadge.updateScoreView(item: MediaListModel) {
+        when (item.user?.mediaListOptions?.scoreFormat) {
+            ScoreFormat.POINT_3.ordinal -> {
+                val drawable = when (item.score?.toInt()) {
+                    1 -> R.drawable.ic_score_sad
+                    2 -> R.drawable.ic_score_neutral
+                    3 -> R.drawable.ic_score_smile
+                    else -> R.drawable.ic_role
+                }
+                setImageResource(drawable)
+                scoreTextVisibility = View.GONE
+            }
+            ScoreFormat.POINT_10_DECIMAL.ordinal -> setText(item.score)
+            else -> text = item.score?.toInt()
         }
     }
 
